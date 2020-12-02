@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Bootstrap 102 Template</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+
+
+    <!-- Bootstrap -->
+
+    <style>
+        h4 {
+            margin-top: 25px;
+        }
+
+        .row {
+            margin-bottom: 20px;
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+
+        [class*="col-"] {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background-color: #eee;
+            background-color: rgba(86, 61, 124, .15);
+            border: 1px solid #ddd;
+            border: 1px solid rgba(86, 61, 124, .2);
+        }
+
+        hr {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+    </style>
+
+    <script>
+
+        var DaliChannels;
+
+        $(document).ready(function () {
+
+
+
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Settings')").addClass("active");
+            });
+
+            $.get("/GetChannels", function (data, status) {
+                DaliChannels = JSON.parse(data);
+                for (var i = 0; i < DaliChannels.length; i++) {
+                    $("#channels").append('<option>' + DaliChannels[i].channel_nr + '</option>');
+                }
+            });
+        });
+        
+    </script>
+
+</head>
+
+<body>
+    <div id='menu'></div>
+    <div class="container">
+        <div class="jumbotron  container-fluid">
+            <h3>Dali Channels</h3>
+            <select id='channels' style='width:250px;' onchange="DoSelectChannel(this.selectedIndex)"></select>
+        </div>
+    </div>
+
+    <script>
+        function ballastFieldChangeHandler(value, ID) {
+            $.post("/UpdateBallast", { ballast_name: value, ID: ID });
+        };
+        function do_value(value, ID) {
+            ID = ID.substr(3, ID.length)
+            $.post("/do_value", { value: value, ID: ID });
+        };
+
+
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

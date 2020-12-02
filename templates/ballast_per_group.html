@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ML Groups</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $( "li:contains('Groups')" ).addClass("active");
+            });
+
+
+
+
+            $.get("/groups_get?channel=1", function (data, status) {
+                groups = JSON.parse(data);
+                for (var i = 0; i < groups.length; i++) {
+                    var group = groups[i];
+                    $("#groups").append(getGroupInputField(group.dali_group_number, group.ID, group.dali_group_name))
+                }
+            });
+
+            function getGroupInputField(group_number, ID, group_name) {
+
+                var group = `
+        <option id='grp$ID$'>$number$ $name$</option>
+      `;
+
+
+                group = group.replace('$number$', group_number);
+                group = group.replace('$ID$', ID);
+                group = group.replace('$name$', group_name);
+
+                return group;
+            }
+        });
+
+
+    </script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id='menu'></div>
+
+
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <h2>Groups</h2>
+            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
+        </div>
+
+        <div class="jumbotron  container-fluid">
+            <div class='col-xs-12 col-md-12 col-lg-5'>
+                <select class="form-control" size=20 style="width:100%;" id='ballastsOutside'></select>
+            </div>
+            <div class='col-xs-12 col-md-12 col-lg-2'>
+                <div style="padding:5px;">
+                    <div class="btn-group" role="group">
+                        <button type='button' id='off$ID$' class='btn btn-primary'
+                            onclick='RemoveFromGroup();'>Remove</button>
+                        <button type='button' id='off$ID$' class='btn btn-primary' onclick='AddToGroup();'>Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class='col-xs-12 col-md-12 col-lg-5'>
+                <select class="form-control" size=20 style='width:100%;' id='ballastsInside'></select>
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h2>Upload- Download</h2>
+            <div class="btn-group" role="group">
+                <button type='button' id='off$ID$' class='btn btn-primary' onclick='uploadToBallasts();'>Upload</button>
+                <button type='button' id='off$ID$' class='btn btn-primary'
+                    onclick='downloadFromBallasts();'>Download</button>
+            </div>
+            <div id='response'>Response</div>
+        </div>
+
+
+    </div>
+
+    <script>
+
+
+        var ballast_ids;
+        var ballast_counter;
+
+        $.get("/GetBallastIDsFromChannel?channel_number=1", function (data, status) {
+            ballast_ids = JSON.parse(data);;
+        });
+
+        function DoSelectGroup(index) {
+
+            function removeOptions(selectbox) {
+                var i;
+                for (i = selectbox.options.length - 1; i >= 0; i--) {
+                    selectbox.remove(i);
+                }
+            }
+
+            removeOptions(document.getElementById("ballastsInside"));
+            removeOptions(document.getElementById("ballastsOutside"));
+
+            $.get("/GetBallastsFromGroup?channel_number=1&group_number=" + index.toString(), function (data, status) {
+                ballasts = JSON.parse(data);
+                for (var i = 0; i < ballasts.length; i++) {
+                    var ballast = ballasts[i];
+                    $("#ballastsInside").append(getBallastField(ballast.ballast_name, ballast.ID, ballast.ballast_short_address))
+                }
+            });
+
+            $.get("/GetBallastsOutsideGroup?channel_number=1&group_number=" + index.toString(), function (data, status) {
+                ballasts = JSON.parse(data);
+                for (var i = 0; i < ballasts.length; i++) {
+                    var ballast = ballasts[i];
+                    $("#ballastsOutside").append(getBallastField(ballast.ballast_name, ballast.ID, ballast.ballast_short_address))
+                }
+            });
+        }
+
+        function downloadFromBallasts() {
+            ballast_counter = 0;
+            downloadNext();
+        }
+
+        function downloadNext() {
+            ballast_id = ballast_ids[ballast_counter].ID;
+            $.get("/downloadGroupsFromBallast?ballast_id=" + ballast_id, function (data, status) {
+                $("#response").text(data);
+                ballast_counter++;
+                if (ballast_counter < 64) {
+                    downloadNext();
+                }
+            });
+        }
+
+
+        function getBallastField(ballast_name, ID, ballast_short_address) {
+
+            var bllst = `
+                    <option id=ID$ID$>$name$</option>
+            `;
+
+            bllst = bllst.replace('$ID$', ID);
+            bllst = bllst.replace('$name$', ballast_short_address + ' ' + ballast_name);
+
+            return bllst;
+        }
+
+        function AddToGroup() {
+            list = document.getElementById("ballastsOutside");
+            ballast_index = list.selectedIndex;
+            GroupList = document.getElementById("groups");
+            group_index = GroupList.selectedIndex;
+            if (ballast_index > -1) {
+                opt = list[ballast_index];
+                idstr = opt.id;
+                id = idstr.substr(2, idstr.length);
+                $.post("/AddBallastToGroup", { group_number: group_index, ID: id })
+                    .done(DoSelectGroup(group_index));
+
+            }
+        }
+
+        function RemoveFromGroup() {
+
+        }
+
+
+
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

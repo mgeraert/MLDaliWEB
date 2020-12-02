@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Scenes</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+
+
+    <script>
+
+        var groupsFromDB;
+        var scenesFromDB;
+        var ballastFromDB
+        var selectedGroupIndex;
+        var selectedScene;
+
+        $(document).ready(function () {
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Scenes')").addClass("active");
+            });
+
+            $.get("/groups_get?channel=1", function (data, status) {
+                groupsFromDB = JSON.parse(data);
+                for (var i = 0; i < groupsFromDB.length; i++) {
+                    var group = groupsFromDB[i];
+                    $("#groups").append(getGroupInputField(group.dali_group_number, group.ID, group.dali_group_name))
+                }
+                DoSelectGroup(1);
+            });
+
+            function getGroupInputField(group_number, ID, group_name) {
+
+                var group = `
+        <option id='grp$ID$'>$number$ $name$</option>
+      `;
+
+
+                group = group.replace('$number$', group_number);
+                group = group.replace('$ID$', ID);
+                group = group.replace('$name$', group_name);
+
+                return group;
+            }
+        });
+
+
+    </script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+
+
+    <div id='menu'></div>
+
+
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <h2>Groups</h2>
+            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
+            <div class="btn-group" role="group">
+                <button type='button' class='btn btn-primary' onclick='GroupOn();'>On</button>
+                <button type='button' class='btn btn-primary' onclick='GroupOff();'>Off</button>
+            </div>
+        </div>
+
+        <div class="jumbotron  container-fluid">
+            <h3>Scenes</h3>
+            <div class='col-xs-12 col-md-12 col-lg-5'>
+                <div id='scenes'></div>
+            </div>
+        </div>
+
+        <div class="jumbotron  container-fluid">
+            <h3>Ballasts</h3>
+            <div class='col-xs-12 col-md-12 col-lg-5'>
+                <div id='ballasts'></div>
+            </div>
+        </div>
+
+        <div class="jumbotron">
+            <h2>Upload- Download</h2>
+            <div class="btn-group" role="group">
+                <button type='button' id='off$ID$' class='btn btn-primary' onclick='uploadToBallasts();'>Upload</button>
+                <button type='button' id='off$ID$' class='btn btn-primary'
+                    onclick='downloadFromBallasts();'>Download</button>
+            </div>
+            <div id='response'>Response</div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        var ballast_ids;
+        var ballast_counter;
+        var scene_counter;
+        var all_ballasts;
+
+        function DoSelectGroup(index) {
+            selectedGroupIndex = index;
+            $("#ballasts").empty();
+            $("#scenes").empty();
+            $.get("/getScenesFromGroup?group_id=" + groupsFromDB[index].ID, function (data, status) {
+                scenesFromDB = JSON.parse(data);
+                for (i = 0; i < scenesFromDB.length; i++) {
+                    sceneID = scenesFromDB[i].ID;
+                    sceneName = scenesFromDB[i].scene_name;
+                    sceneNumber = scenesFromDB[i].scene_number;
+                    SceneInput = getSceneRow(sceneID, sceneName, sceneNumber, i);
+                    $("#scenes").append(SceneInput);
+                }
+            });
+
+            $.get("/SetAddressMode?address_mode=2", function (data, status) {
+            });
+            $.get("/SetBallastOrGroupAddress?ballast_or_group_address=" + groupsFromDB[selectedGroupIndex].dali_group_number, function (data, status) {
+            });
+
+
+        }
+
+        function getSceneRow(sceneID, SceneName, sceneNumber, index) {
+            divText = `
+                    <div style='padding:3px;width:300px;'>
+                        $sceneNumber
+                        <input id="$sceneID" 
+                            onchange='sceneFieldChangeHandler(this.value, this.id)' value='$SceneName'></input>
+                        <button type='button' id="$gotoID" class='btn btn-primary' onclick='gotoScene(this.id);' 
+                            data-toggle="tooltip" data-placement="right" title="Goto scene $sceneNumber">Goto</button>
+                    </div>
+                    `
+
+            divText = divText.replace('$sceneID', 'si' + index);
+            divText = divText.replace('$gotoID', 'gt' + sceneNumber);
+            divText = divText.replace('$SceneName', SceneName);
+            divText = divText.replace('$sceneNumber', sceneNumber);
+            divText = divText.replace('$sceneNumber', sceneNumber);
+            return divText;
+        }
+
+        function gotoScene(sceneNumber) {
+            $("#ballasts").empty();
+            selectedScene = sceneNumber.substr(2, sceneNumber.length);
+            group_id = groupsFromDB[selectedGroupIndex].ID;
+            $.get("/getSceneValuesForGroup?group_id=" + group_id + '&scene_number=' + selectedScene, function (data, status) {
+                ballastFromDB = JSON.parse(data);
+                for (i = 0; i < ballastFromDB.length; i++) {
+                    ballastID = ballastFromDB[i].ID;
+                    ballastName = ballastFromDB[i].ballast_name;
+                    sceneValue = ballastFromDB[i].scene_value;
+                    ballast_short_address = ballastFromDB[i].ballast_short_address;
+                    ballastRow = getBallastRow(ballastID, ballastName, sceneValue, ballast_short_address, i);
+                    $("#ballasts").append(ballastRow);
+                    sliderID = 'sl' + i;
+                    checkBoxID = 'ch' + i;
+                    if (sceneValue == 255) {
+                        document.getElementById(sliderID).disabled = true;
+                        document.getElementById(checkBoxID).checked = true;
+                    }
+                    else {
+                        document.getElementById(sliderID).disabled = false;
+                        document.getElementById(checkBoxID).checked = false;
+                    }
+                }
+
+            });
+        }
+
+        function getBallastRow(ballastID, ballastName, sceneValue, ballast_short_address, index) {
+
+            divText = `
+                    <div style='padding:3px;width:550px;'>
+                        $ballast_short_address $ballastName
+                        <input type="range" min="0" max="254" value='$value' class="slider" id="$SliderID" 
+                             onchange="updateSceneValue(this.id, this.value);">
+                            <div class="form-check">
+                                 <input type="checkbox" onchange="updateDNR(this.id, this.checked);" id="$CheckBoxID" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">DNR</label>
+                            </div>
+                    </div>
+                    `
+            divText = divText.replace('$ballast_short_address', ballast_short_address);
+            divText = divText.replace('$ballastName', ballastName);
+            divText = divText.replace('$SliderID', 'sl' + index);
+            divText = divText.replace('$CheckBoxID', 'ch' + index);
+            divText = divText.replace('$value', sceneValue);
+
+            return divText;
+        }
+
+        function updateSceneValue(id, scene_value) {
+            index = id.substr(2, id.length);
+            ballast_id = ballastFromDB[index].ID;
+
+            $.get("/updateSceneValue?ballast_id=" + ballast_id + '&scene_number=' + selectedScene + '&scene_value=' + scene_value, function (data, status) {
+            });
+        }
+
+        function sceneFieldChangeHandler(scene_name, inputID) {
+            selectedSceneIndex = inputID.substr(2, inputID.length);
+            scene_id = scenesFromDB[selectedSceneIndex].ID;
+            $.get("/updateSceneName?scene_id=" + scene_id + '&scene_name=' + scene_name, function (data, status) {
+            });
+
+        }
+
+        function updateDNR(id, checkBoxValue) {
+            index = id.substr(2, id.length);
+            ballast_id = ballastFromDB[index].ID;
+            slider_value = document.getElementById("sl" + index).value;
+            window.alert(checkBoxValue);
+
+            if (checkBoxValue) {
+                $.get("/updateSceneValue?ballast_id=" + ballast_id + '&scene_number=' + selectedScene + '&scene_value=255', function (data, status) {
+                    document.getElementById("sl" + index).disabled = true;
+                });
+
+            }
+            else {
+                $.get("/updateSceneValue?ballast_id=" + ballast_id + '&scene_number=' + selectedScene + '&scene_value=' + slider_value.toString(), function (data, status) {
+                    document.getElementById("sl" + index).disabled = false;
+                });
+            }
+
+        }
+
+        function downloadFromBallasts() {
+            $("#response").text('Loading all ballasts...');
+            $.get("/ballasts_get?channel=1", function (data, status) {
+                all_ballasts = JSON.parse(data);
+                ballast_counter = 0;
+                scene_counter = 0;
+                $("#response").text('Loading complete');
+                downloadNext();
+            });
+        }
+
+        function downloadNext() {
+            ballast_id = all_ballasts[ballast_counter].ID;
+
+            $.get("/DownloadSceneFromBallast?ballast_id=" + ballast_id + '&scene_number=' + scene_counter.toString(), function (data, status) {
+                $("#response").text(data);
+                scene_counter++;
+                if (scene_counter == 16) {
+                    scene_counter = 0;
+                    ballast_counter++;
+                }
+                if (ballast_counter < 64) {
+                    downloadNext();
+                }
+            });
+        }
+
+        function GroupOn(){
+            $.get("/SetArcLevel?arc_level=254", function (data, status) {
+            });
+        }
+
+        function GroupOff(){
+            $.get("/SetArcLevel?arc_level=0", function (data, status) {
+            });
+        }
+
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

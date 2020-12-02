@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Index</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+  <!-- Bootstrap -->
+
+  <style>
+
+  </style>
+
+  <script>
+
+    $(document).ready(function () {
+
+
+
+
+
+      $.get("/getPages", function (data, status) {
+        pages = JSON.parse(data);
+        listHTML = '';
+        for (var index = 0; index < pages.length; index++) {
+          var page = pages[index];
+          listHTML = listHTML + getPageButton(page.page_name, index);
+        }
+        $('#index').html(listHTML);
+      });
+
+      function getPageButton(name, index) {
+        pageButton = "<div style='$style' onclick='selectControlPage($index)'>$name</div>";
+        pageButton = pageButton.replace('$name', name);
+        pageButton = pageButton.replace('$index', index);
+        pageButton = pageButton.replace('$style', 'text-align: center;' +
+          'cursor: pointer;' +
+          'padding:10px;' +
+          'margin:2px;' +
+          'opacity: 0.9;' +
+          'border-style: solid;' +
+          'filter: alpha(opacity=90);' +
+          'font-size: 35px;' +
+          'color: white;');
+        return pageButton;
+      }
+
+    });
+
+  </script>
+
+</head>
+
+<body background="static/bg/11.jpg">
+  <div id='menu'></div>
+  <div class="container">
+
+    <div id='index'>
+
+    </div>
+
+  </div>
+
+  <script>
+
+
+    function selectControlPage(index) {
+      var page = pages[index];
+      window.open('control?pageID=' + page.ID, "_self");
+      //$.get('control?pageID=' + page.ID, function (data, status) {
+      
+      //});
+    }
+  </script>
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

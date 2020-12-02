@@ -1,0 +1,46 @@
+<div style="Width:90%;margin: auto;">
+
+
+
+
+        <div class="brick6" style="sr_style" onclick="doControl('off');">OFF</div>
+        <div class="brick6" style='sr_style' onclick="doControl('on');">ON</div>
+
+
+        <div class="brick6" style='sr_style' onclick="doControl('down');">DOWN</div>
+        <div class="brick6" style='sr_style' onclick="doControl('up');">UP</div>
+
+        <div class="brick1"><div class="dimBrickInner" style="opacity:0;" onclick="doSetArcLevel(0);"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(23);"><div class="dimBrickInner" style="opacity:.08;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(47);"><div class="dimBrickInner" style="opacity:.16;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(69);"><div class="dimBrickInner" style="opacity:.24;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(92);"><div class="dimBrickInner" style="opacity:.41;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(115);"><div class="dimBrickInner" style="opacity:.5;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(138);"><div class="dimBrickInner" style="opacity:.58;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(161);"><div class="dimBrickInner" style="opacity:.66;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(184);"><div class="dimBrickInner" style="opacity:.75;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(207);"><div class="dimBrickInner" style="opacity:.83;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(230);"><div class="dimBrickInner" style="opacity:.92;"></div></div>
+        <div class="brick1" onclick="doSetArcLevel(254);"><div class="dimBrickInner" style="opacity:1;"></div></div>
+        <div id='scenes'></div>
+</div>
+
+
+
+<style>
+.dimBrickInner {
+  background-color: white;
+  width:calc(8.3333%-8px);
+  height:86px;
+}
+.brickOuter {
+  color: white;
+  border: 2px solid white;
+  margin: 2px;
+  width: calc(8.333333% - 4px);
+  text-align: center;
+  font-size: 35px;
+  box-sizing:border-box;
+  height:90px;
+}
+  </style>

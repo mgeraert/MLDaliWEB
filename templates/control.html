@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Control</title>
+
+    <link rel="stylesheet" type="text/css" href="static/css/white1.css" />
+</head>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<!-- Bootstrap -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bricks.css') }}">
+
+<script>
+    var visuals;
+    var selectedtedVisual;
+    var ballasts;
+    var scenes;
+
+    $(document).ready(function () {
+
+        var url_string = window.location.href;
+        var url = new URL(url_string);
+        var pageID = url.searchParams.get("pageID");
+        var visual_columns_total;
+
+        $.get("/getVisual?visual_page_id=" + pageID, function (data, status) {
+            visuals = JSON.parse(data);
+            visual_columns_total = 0;
+
+            grid_html = "";
+
+            for (var index = 0; index < visuals.length; index++) {
+                var visual_item = visuals[index];
+                visual_columns_total = visual_columns_total + visual_item.visual_columns;
+                if (visual_columns_total > 12) {
+                    visual_columns_total = visual_columns_total - 12;
+                    grid_html = grid_html + "";
+                }
+
+                grid_html = grid_html + getVisualItem2(visual_item.visual_name, visual_item.visual_type, visual_item.visual_columns, visual_item.visual_item, index);
+            }
+            grid_html = grid_html + "";
+            $('#render').html(grid_html);
+        });
+
+
+        function getVisualItem2(visual_name, visual_type, visual_columns, visual_ID_of_type, index) {
+            if (visual_type !== 9) {
+                visualItem = "<div class='brick$visual_columns'" +
+                    " onclick = 'doSelectVisualItem($index)'>$visual_name</div>";
+            }
+
+            visualItem = visualItem.replace('$index', index);
+            visualItem = visualItem.replace('$visual_name', visual_name);
+            visualItem = visualItem.replace('$visual_columns', visual_columns);
+
+            return visualItem;
+        }
+
+        $.get("/basicControl", function (data, status) {
+            data = data.replace(/sr_style/g, 'text-align: center;' +
+                'cursor: pointer;' +
+                'padding:10px;' +
+                'margin:2px;' +
+                'opacity: 0.9;' +
+                'border-style: solid;' +
+                'filter: alpha(opacity=90);' +
+                'font-size: 35px;' +
+                'color: white;');
+            $('#basicControl').html(data);
+
+        });
+    });
+
+    function doSelectVisualItem(index) {
+        selectedtedVisual = visuals[index];
+        selectedBallast = [];
+        $('#selectedVisual').text(selectedtedVisual.visual_name);
+
+        if (selectedtedVisual.visual_type == 2) {
+            ballasts = [];
+            $.get("/GetBallastsFromGroupID?group_id=" + selectedtedVisual.visual_ID_of_type, function (data, status) {
+                ballasts = JSON.parse(data);
+                FillBallastList();
+            });
+        }
+        else {
+            $('#ballasts').empty();
+        }
+        if (selectedtedVisual.visual_type == 2) {
+            scenes = [];
+            $.get("/getScenesFromGroup?group_id=" + selectedtedVisual.visual_ID_of_type, function (data, status) {
+                scenes = JSON.parse(data);
+                FillScenesList();
+            });
+        }
+        else {
+            $('#scenes').empty();
+        }
+    }
+
+    function doControl(action) {
+        if (selectedtedVisual.ID) {
+            if (typeof selectedtedVisual === 'undefined') { return };
+
+            $.get("/doControl?action=" + action + '&visualID=' + selectedtedVisual.ID, function (data, status) {
+
+            });
+        }
+
+        else if (selectedBallast.ID) {
+            $.get("/doControlBallast?action=" + action + '&ballast_id=' + selectedBallast.ID, function (data, status) {});
+        }
+    }
+    function doSetArcLevel(arcLevel) {
+        if (selectedtedVisual.ID) {
+            if (typeof selectedtedVisual === 'undefined') { return };
+
+            $.get("/doSetArcLevel?arc_level=" + arcLevel + '&visualID=' + selectedtedVisual.ID, function (data, status) {
+            });
+        }
+
+        else if (selectedBallast.ID) {
+            $.get("/doSetArcLevelBallast?arc_level=" + arcLevel + '&ballast_id=' + selectedBallast.ID, function (data, status) {});
+        }
+    }
+
+    function FillScenesList() {
+
+        grid_html = "";
+        $('#scenes').empty();
+
+        for (var index = 0; index < scenes.length; index++) {
+            var scene_item = scenes[index];
+            if (scene_item.scene_name) {
+                grid_html = grid_html + GetSceneItem(index, scene_item.ID, scene_item.scene_group_id,
+                    scene_item.scene_name, scene_item.scene_number, scene_item.scene_sort_order);
+            }
+        }
+        grid_html = grid_html + "";
+        $('#scenes').html(grid_html);
+    }
+
+    function FillBallastList() {
+
+        grid_html = "";
+        $('#ballasts').empty();
+
+        for (var index = 0; index < ballasts.length; index++) {
+            var ballast_item = ballasts[index];
+            if (ballast_item.ballast_name) {
+                ballastName = ballast_item.ballast_name;
+            }
+            else {
+                ballastName = "Ballast nr " + ballast_item.ballast_short_address.toString();
+            }
+            grid_html = grid_html + getBallastItem(ballastName, index);
+        }
+
+        $('#ballasts').html(grid_html);
+    }
+
+    function getBallastItem(ballast_name, index) {
+
+        visualItem = "<div class='brick6'" +
+            " onclick = 'doSelectBallast($index)'>$visual_name</div>";
+
+
+        visualItem = visualItem.replace('$index', index);
+        visualItem = visualItem.replace('$visual_name', ballast_name);
+
+
+        return visualItem;
+    }
+
+    function GetSceneItem(index, ID, scene_group_id, scene_name, scene_number, scene_sort_order) {
+        sceneItem = "<div class='brick12'" +
+            " onclick = 'doSelectScene($index)'>$scene_name</div>";
+
+        sceneItem = sceneItem.replace('$index', index);
+        sceneItem = sceneItem.replace('$scene_name', scene_name);
+
+        return sceneItem;
+    }
+
+    function doSelectScene(index) {
+        if (typeof selectedtedVisual === 'undefined') { return };
+
+        scene = scenes[index];
+        $.get("/gotoScene?scene_number=" + scene.scene_number + '&visual_id=' + selectedtedVisual.ID, function (data, status) {
+        });
+    }
+
+    function doSelectBallast(index) {
+        selectedtedVisual = [];
+        selectedBallast = ballasts[index];
+        $('#selectedVisual').text(selectedBallast.ballast_name);
+    }
+
+</script>
+
+</head>
+
+<body background="static/bg/11.jpg">
+    <div id='menu'></div>
+    <div style="Width:90%;margin: auto;">
+        <div id='render' ></div>
+    </div>
+
+    <div id='basicControl'></div>
+
+    <div style="Width:90%;margin: auto;">
+        <div id='ballasts'></div>
+    </div>
+
+    <script>
+
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

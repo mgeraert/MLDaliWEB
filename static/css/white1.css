@@ -1,0 +1,23 @@
+.groupSelector {
+    text-align: center;
+    cursor: pointer;
+    padding:10px;
+    margin:2px;
+    opacity: 0.9;
+    border-style: solid;
+    filter: alpha(opacity=90);
+    font-size: 35px;
+    color: white;
+}
+
+.ballastSelector {
+    text-align: center;
+    cursor: pointer;
+    padding:10px;
+    margin:2px;
+    opacity: 0.9;
+    border-style: solid;
+    filter: alpha(opacity=90);
+    font-size: 35px;
+    color: white;
+}

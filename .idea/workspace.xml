@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1iVunHMnjJiAhTIjw1Gge88lGnk" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/visuals.html" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings>
+        <option name="useSoftWraps" value="true" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\lucp2284.LP2284-01\PycharmProjects\flasktest\classes" />
+      <recent name="C:\Users\lucp2284.LP2284-01\PycharmProjects\flasktest\templates" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\lucp2284.LP2284-01\PycharmProjects\flasktest" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.flask">
+    <configuration name="createdb" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="MLWeb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\marcg\AppData\Local\Programs\Python\Python38-32\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/createdb.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="flask" type="PythonConfigurationType" factoryName="Python">
+      <module name="MLWeb" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\marcg\PycharmProjects\untitled\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.createdb" />
+      <item itemvalue="Python.flask" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="" />
+      <created>1546888024394</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546888024394</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1988" y="382" key="#Notifications" timestamp="1602010672623">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1988" y="382" key="#Notifications/0.0.3440.1400@0.0.3440.1400" timestamp="1602010672623" />
+    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604339155459">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1604339155459" />
+    <state x="2380" y="466" key="#xdebugger.XInspectDialog" timestamp="1603299957513">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="2380" y="466" key="#xdebugger.XInspectDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1603299957513" />
+    <state width="719" height="466" key="DebuggerActiveHint" timestamp="1604605430957">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="719" height="466" key="DebuggerActiveHint/0.0.3440.1400@0.0.3440.1400" timestamp="1604605430957" />
+    <state x="2164" y="465" key="FileChooserDialogImpl" timestamp="1603009624522">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="2164" y="465" key="FileChooserDialogImpl/0.0.3440.1400@0.0.3440.1400" timestamp="1603009624522" />
+    <state width="1828" height="459" key="GridCell.Tab.0.bottom" timestamp="1606850590478">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
+    <state width="1828" height="459" key="GridCell.Tab.0.center" timestamp="1606850590478">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
+    <state width="1828" height="459" key="GridCell.Tab.0.left" timestamp="1606850590478">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
+    <state width="1828" height="459" key="GridCell.Tab.0.right" timestamp="1606850590478">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
+    <state width="1828" height="459" key="GridCell.Tab.1.bottom" timestamp="1606850591435">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
+    <state width="1828" height="459" key="GridCell.Tab.1.center" timestamp="1606850591435">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
+    <state width="1828" height="459" key="GridCell.Tab.1.left" timestamp="1606850591435">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
+    <state width="1828" height="459" key="GridCell.Tab.1.right" timestamp="1606850591435">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="1828" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
+    <state x="1397" y="409" key="SettingsEditor" timestamp="1603827830520">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1397" y="409" key="SettingsEditor/0.0.3440.1400@0.0.3440.1400" timestamp="1603827830520" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1603908063168">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.3440.1400@0.0.3440.1400" timestamp="1603908063168" />
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1606850324781">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1606850324781" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/doControl.py</url>
+          <line>5</line>
+          <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/database.py</url>
+          <line>131</line>
+          <option name="timeStamp" value="142" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/DaliChannel.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+      </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="sql_string" language="Python" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

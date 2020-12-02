@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Bootstrap 102 Template</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+
+
+  <!-- Bootstrap -->
+
+  <style>
+    h4 {
+      margin-top: 25px;
+    }
+
+    .row {
+      margin-bottom: 20px;
+    }
+
+    .row .row {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    [class*="col-"] {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      background-color: #eee;
+      background-color: rgba(86, 61, 124, .15);
+      border: 1px solid #ddd;
+      border: 1px solid rgba(86, 61, 124, .2);
+    }
+
+    hr {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () {
+
+      $('#menu').load('/navbar', function () {
+        $('#menubar').find("li").each(function (index) {
+          $(this).removeClass("active");
+        });
+        $("li:contains('Ballasts')").addClass("active");
+      });
+
+      $("#aan").click(function () {
+        $.get("aan", function (data, status) {
+          $("#status").text(data)
+        });
+      });
+
+      $("#uit").click(function () {
+        $.get("uit", function (data, status) {
+          $("#status").text(data)
+        });
+      });
+
+
+
+
+
+      $.get("/ballasts_get?channel=1", function (data, status) {
+        ballasts = JSON.parse(data);
+        for (var i = 0; i < ballasts.length; i++) {
+          var ballast = ballasts[i];
+          $("#ballasts").append(getBallastInputField(ballast.ballast_name, ballast.ID, ballast.ballast_short_address))
+        }
+      });
+
+
+
+      function getBallastInputField(ballast_name, ID, ballast_short_address) {
+
+
+        var bllst = `
+          <div class='col-xs-12 col-md-6 col-lg-4'>
+            
+            <button type='button' class='btn btn-secondary' style='width:40px'>$label$</button>
+            <input class='ballastInputField' id='bal$ID$' onchange='ballastFieldChangeHandler(this.value, this.id)' value='$name$'></input>
+            <div class='btn-group' role='group' aria-label='Basic example'>
+              <button type='button' id ='on_$ID$'  class='btn btn-danger' onclick='do_value(0, this.id)'>Uit</button>
+              <button type='button' id ='off$ID$' class='btn btn-success' onclick='do_value(254, this.id)'>Aan</button>
+            </div> 
+          </div>
+          `;
+
+
+        bllst = bllst.replace('$label$', ballast_short_address);
+        bllst = bllst.replace('$ID$', ID);
+        bllst = bllst.replace('$ID$', ID);
+        bllst = bllst.replace('$ID$', ID);
+        bllst = bllst.replace('$ID$', ID);
+        bllst = bllst.replace('$name$', ballast_name);
+
+        return bllst;
+      }
+    });
+
+
+
+  </script>
+
+</head>
+
+<body>
+  <div id='menu'></div>
+  <div class="container">
+
+    <div class="row" id='ballasts'></div>
+  </div>
+
+  <script>
+    function ballastFieldChangeHandler(value, ID) {
+      $.post("/UpdateBallast", { ballast_name: value, ID: ID });
+    };
+    function do_value(value, ID) {
+      ID = ID.substr(3, ID.length)
+      $.post("/do_value", { value: value, ID: ID });
+    };
+
+
+  </script>
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+</body>
+
+</html>

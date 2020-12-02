@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>ML Groups</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bricks.css') }}">
+
+    <style>
+        /* Remove default bullets */
+        ul,
+        #myUL {
+            list-style-type: none;
+        }
+
+        /* Remove margins and padding from the parent ul */
+        #myUL {
+            margin: 0;
+            padding: 0;
+        }
+
+        .groupSelector {
+            text-align: center;
+            cursor: pointer;
+            padding: 2px;
+            margin: 1px;
+            filter: alpha(opacity=90);
+            font-size: 16px;
+            color: black;
+            border-style: solid;
+        }
+
+        .ballastSelector {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            margin: 2px;
+            opacity: 0.9;
+            border-style: solid;
+            filter: alpha(opacity=90);
+            font-size: 35px;
+            color: white;
+        }
+    </style>
+
+    <script>
+
+        var tree;
+        var visuals;
+        var previousTreeType = 0
+        var ulIndex = 0;
+        var ulID = '';
+        var g_pages;
+        var g_selectedPageIndex;
+        var g_selectedVisualID;
+        var g_selectedVisualName;
+        var g_bgColor = 'black';
+        var g_SelectedColor = 'gray';
+        var pageID = 1;
+
+        function getVisuals(pageID) {
+            Height = $('#render').css("height");
+            //$('#render').css('min-height',Height)
+            $('#render').empty();
+            $.get("/getVisual?visual_page_id=" + pageID, function (data, status) {
+                visuals = JSON.parse(data);
+                visual_columns_total = 0;
+                new_row_detected = 0;
+
+                grid_html = "";
+
+                for (var index = 0; index < visuals.length; index++) {
+                    var visual_item = visuals[index];
+                    grid_html = grid_html + getVisualItem2(visual_item.visual_name, visual_item.visual_type, visual_item.visual_columns, index, visual_item.ID);
+                    visual_columns_total = visual_columns_total + visual_item.visual_columns;
+                    if (visual_columns_total >= 12) {
+                        visual_columns_total = 0;
+                        new_row_detected = 1;
+                        grid_html = grid_html;
+                    }
+                }
+                grid_html = grid_html + "</div>";
+                $('#render').html(grid_html);
+                doSelectVisualItemByDataID();
+                selectSelected();
+            });
+        }
+
+        function getVisualItem2(visual_name, visual_type, visual_columns, index, ID) {
+            if (visual_type !== 9) {
+                visualItem = "<div class='brick$visual_columns'" +
+                    " data-ID=$DataID " +
+                    " onclick = 'doSelectVisualItem($index, this)'>$visual_name</div>";
+            }
+
+            visualItem = visualItem.replace('$index', index);
+            visualItem = visualItem.replace('$visual_name', visual_name);
+            visualItem = visualItem.replace('$visual_columns', visual_columns);
+            visualItem = visualItem.replace('$DataID', "'" + ID + "'");
+
+            return visualItem;
+        }
+
+        function getTree() {
+            $.get("/get_tree", function (data, status) {
+                $('#tree').empty();
+                tree = JSON.parse(data);
+                ulID = 'tree' + ulIndex.toString()
+                var listHTML = "<ul id='" + ulID + "'>";
+
+                for (var index = 0; index < tree.length; index++) {
+                    var tree_item = tree[index];
+                    listHTML = listHTML + getTreeItem(tree_item.name, tree_item.id_of_type, tree_item.type, index);
+                }
+                listHTML = listHTML + '</ul>'
+                $('#tree').html(listHTML);
+            });
+        }
+
+        function getTreeItem(name, id_of_type, type, index) {
+
+            var treeItem;
+
+            if (type > previousTreeType) {
+                ulIndex = ulIndex + 1;
+                ulID = 'tree' + ulIndex.toString();
+            }
+
+            if (type > 2) {
+                treeItem = `
+            <li id='$ID$' style='display:none;'><div onclick ='treeItemOnClick($index$, this)' 
+            onmouseover="" style="cursor: pointer;">$name$</div></li>`;
+            } else {
+                treeItem = `
+                <li id='$ID$'><span class="badge" style="cursor: pointer;" onclick ='treeItemToggleClick(\"$ULID$\", this);'>+</span>
+            <div onclick ='treeItemOnClick($index$, this);' 
+            onmouseover="" style="cursor: pointer; display: inline-block;padding-left: 5px;">$name$</div></li>`;
+            }
+
+            treeItem = treeItem.replace('$index$', index);
+            treeItem = treeItem.replace('$ID$', 'li' + index);
+            treeItem = treeItem.replace('$ULID$', 'tree' + (ulIndex + 1).toString());
+            treeItem = treeItem.replace('$name$', name);
+
+            if (type > previousTreeType) {
+                li = "<ul id='" + ulID + "'>" + treeItem;
+            }
+            else if (type < previousTreeType) { li = '</ul>' + treeItem; }
+            else { li = treeItem }
+
+            previousTreeType = type;
+            return li;
+
+        }
+
+        $(document).ready(function () {
+
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Visuals')").addClass("active");
+            });
+
+            $.get("/getPages", function (data, status) {
+                g_pages = JSON.parse(data);
+                pagesHTML = "<select $onClick>";
+                for (var index = 0; index < g_pages.length; index++) {
+                    var page = g_pages[index];
+                    pagesHTML = pagesHTML + '<option>' + page.page_name + '</option>';
+                }
+
+                pagesHTML = pagesHTML.replace('$onClick', "onclick='doSelectPage(this.selectedIndex)';");
+                pagesHTML = pagesHTML + "</select>";
+                $('#pages').html(pagesHTML);
+
+            });
+        });
+
+        function doSelectPage(index) {
+            $('.jumbotron').css("display", "block");
+            g_selectedPageIndex = index;
+            pageID = g_pages[g_selectedPageIndex].ID;
+            getTree();
+            getVisuals(pageID);
+        }
+
+
+    </script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id='menu'></div>
+
+
+
+    <div class="container">
+
+        <div style='padding:5px;'>Choose page: <div id='pages' style='padding:5px;'></div>
+        </div>
+
+        <div class="jumbotron" style='display:none;'>
+            <h2>Tree</h2>
+            <div id='tree' class="treeview"
+                style='background-color: white; overflow:scroll; height: 400px; width: 450px;'></div>
+            <button style='padding:5px;' type="button" class="btn btn-primary" onclick='addElement();'>Add</button>
+        </div>
+
+
+        <div style="Width:90%;margin: auto;">
+            <div style="padding:5px;">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-danger" onclick='removeSelected()'><span
+                            class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick='moveUp()'><span
+                            class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick='moveDown()'><span
+                            class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                    <button type="button" class="btn btn-dark" onclick='resize(12)'>1/1</button>
+                    <button type="button" class="btn btn-dark" onclick='resize(6)'>1/2</button>
+                    <button type="button" class="btn btn-dark" onclick='resize(4)'>1/3</button>
+                    <button type="button" class="btn btn-dark" onclick='resize(3)'>1/4</button>
+                </div>
+            </div>
+            <div id='render' style="background-color:black;display: block; overflow: auto;"></div>
+        </div>
+
+
+        <script>
+            var selectedIndex = -1;
+
+            function treeItemOnClick(index, divElem) {
+                selectedIndex = index;
+                var ul = document.getElementById("tree");
+                var items = ul.getElementsByTagName("div");
+                for (var i = 0; i < items.length; ++i) {
+                    items[i].style.fontWeight = 'normal';
+                }
+                divElem.style.fontWeight = 'bold';
+            }
+
+            function treeItemToggleClick(ID, spanElement) {
+                spantext = spanElement.textContent;
+                if (spantext.localeCompare('+') == 0) {
+                    listItems = $('#' + ID).children().css("display", "block");
+                    spanElement.textContent = "-";
+                } else {
+                    listItems = $('#' + ID).children().css("display", "none");
+                    spanElement.textContent = "+";
+                }
+            }
+
+            function addElement() {
+                if (selectedIndex < 0) {
+                    alert('Select element first.')
+                    return;
+                }
+                visualPageID = g_pages[g_selectedPageIndex].ID;
+                var tree_item = tree[selectedIndex];
+                XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
+                XHRString = XHRString.replace('arg1', 'visual_name=' + tree_item.name + '&');
+                XHRString = XHRString.replace('arg2', 'visual_page_ID=' + visualPageID.toString() + '&');
+                XHRString = XHRString.replace('arg3', 'visual_type=' + tree_item.type + '&');
+                XHRString = XHRString.replace('arg4', 'visual_columns=' + '12' + '&');
+                XHRString = XHRString.replace('arg5', 'visual_ID_of_type=' + tree_item.id_of_type);
+
+                $.get(XHRString, function (data, status) {
+                    getVisuals(visualPageID);
+                });
+            }
+
+
+            var SelectedVisualIndex;
+
+            function doSelectVisualItem(index, source) {
+                g_selectedVisualName = source.innerHTML;
+                $('#render').find("div").each(function (index) {
+                    $(this).css("background-color", "black");
+                });
+                SelectedVisualIndex = index;
+
+                var visual_item = visuals[index];
+                g_selectedVisualID = visual_item.ID;
+                source.style.backgroundColor = g_SelectedColor;
+            }
+
+
+            function doSelectVisualItemByDataID() {
+
+                if (g_selectedVisualID) {
+                    $('#render').find("div").each(function (index) {
+                    $(this).css("background-color", "black");
+                });
+                    dv = $('*[data-ID="' + g_selectedVisualID + '"]');
+                    dv.css("background-color", g_SelectedColor);
+                }
+            }
+
+            function removeSelected() {
+                if (g_selectedVisualID < 0) { return }
+
+                $.get("/DeleteVisual?ID=" + g_selectedVisualID.toString(), function (data, status) {
+                    response = data;
+                    if (data.localeCompare('http200') == 0) {
+                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                    }
+
+                });
+            }
+
+            function resize(col_width) {
+                if (g_selectedVisualID < 0) { return }
+
+                $.get("/ResizeVisual?col_width=" + col_width.toString() + '&ID=' + g_selectedVisualID.toString(), function (data, status) {
+                    response = data;
+                    if (data.localeCompare('http200') == 0) {
+                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                    }
+                });
+            }
+
+            function moveUp() {
+                if (g_selectedVisualID < 0) { return }
+
+                $.get("/MoveVisualUp?visual_id=" + g_selectedVisualID.toString(), function (data, status) {
+                    response = data;
+                    if (data.localeCompare('http200') == 0) {
+                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                    }
+                });
+            }
+
+            function moveDown() {
+                if (g_selectedVisualID < 0) { return }
+
+                $.get("/MoveVisualDown?visual_id=" + g_selectedVisualID.toString(), function (data, status) {
+                    response = data;
+                    if (data.localeCompare('http200') == 0) {
+                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                    }
+                });
+            }
+
+            function selectSelected() {
+                if (!g_selectedVisualID) { return };
+                id = 'sel' + g_selectedVisualID.toString();
+                $('#' + id).css('background-color', g_bgColor);
+            }
+
+        </script>
+
+
+
+</body>
+
+</html>

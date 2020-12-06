@@ -17,6 +17,7 @@ class DaliChannel(object):
     __ballast_or_group_address = 0
     __dali_channel_nr = 0
     __port_error = 0
+    __ser = 0
 
     def __init__(self, dali_channel_nr):
         self.__dali_channel_nr = dali_channel_nr
@@ -31,9 +32,11 @@ class DaliChannel(object):
         ser.timeout = .3
         try:
             ser.open()
-            self.ser = ser
+
         except :
             __port_error = 1
+
+        self.ser = ser
 
     def get_port_error(self):
         return self.__port_error

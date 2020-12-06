@@ -1,5 +1,5 @@
 from flask import Blueprint
-from classes.database import Database
+from classes.Database import Database
 import json
 
 pages = Blueprint('pages', __name__)

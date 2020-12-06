@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="" />
+    <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_pages.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_visual.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/DaliChannel.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/DaliChannels.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/createdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/createdb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doControl.py" beforeDir="false" afterPath="$PROJECT_DIR$/doControl.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,7 +24,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1iVunHMnjJiAhTIjw1Gge88lGnk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -23,8 +36,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/visuals.html" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -108,10 +122,10 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="1988" y="382" key="#Notifications/0.0.3440.1400@0.0.3440.1400" timestamp="1602010672623" />
-    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604339155459">
+    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606935578793">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1604339155459" />
+    <state x="1350" y="422" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1606935578793" />
     <state x="2380" y="466" key="#xdebugger.XInspectDialog" timestamp="1603299957513">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -156,18 +170,18 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="1828" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
-    <state x="1397" y="409" key="SettingsEditor" timestamp="1603827830520">
+    <state x="1397" y="409" key="SettingsEditor" timestamp="1607267029306">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1397" y="409" key="SettingsEditor/0.0.3440.1400@0.0.3440.1400" timestamp="1603827830520" />
+    <state x="1397" y="409" key="SettingsEditor/0.0.3440.1400@0.0.3440.1400" timestamp="1607267029306" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1603908063168">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.3440.1400@0.0.3440.1400" timestamp="1603908063168" />
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1606850324781">
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1607166738728">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1606850324781" />
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1607166738728" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -178,7 +192,7 @@
           <option name="timeStamp" value="125" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/classes/database.py</url>
+          <url>file://$PROJECT_DIR$/classes/Database.py</url>
           <line>131</line>
           <option name="timeStamp" value="142" />
         </line-breakpoint>

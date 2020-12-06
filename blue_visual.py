@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from classes.database import Database
+from classes.Database import Database
 import json
 
 visual = Blueprint('visual', __name__)

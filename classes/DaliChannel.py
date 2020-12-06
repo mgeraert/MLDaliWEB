@@ -1,7 +1,7 @@
 import serial
 import time
 from enum import Enum
-from classes.database import Database
+from classes.Database import Database
 
 class AddressModes(Enum):
     broadcast = 1

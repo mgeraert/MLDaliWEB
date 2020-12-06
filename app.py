@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from classes.database import Database
+from classes.Database import Database
 import sys
 import glob
 import serial.tools.list_ports as port_list

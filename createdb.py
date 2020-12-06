@@ -1,5 +1,5 @@
 
-from classes.database import Database
+from classes.Database import Database
 
 db = Database()
 

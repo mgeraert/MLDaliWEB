@@ -14,7 +14,7 @@
 	  margin: 2px;
 	  width: calc(50% - 4px);
 	  text-align: center;
-	  font-size: 35px;
+	  font-size: 20px;
 	  box-sizing:border-box;
 	  float: left;
 	}
@@ -24,7 +24,7 @@
 	  margin: 2px;
 	  width:calc(33.333% - 4px);
 	  text-align: center;
-	  font-size: 35px;
+	  font-size: 20px;
 	  box-sizing:border-box;
 	  float: left;
 	}
@@ -68,4 +68,17 @@
 	  box-sizing:border-box;
 	  float: left;
 	}
+
+	.brick12_ballast {
+		color: white;
+		border: 2px solid white;
+		margin: 2px;
+		width: calc(100% - 4px);
+		text-align: center;
+		font-size: 20px;
+		box-sizing:border-box;
+		float: left;
+	  }
+
+
 </style>

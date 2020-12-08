@@ -33,7 +33,7 @@ class DaliChannel(object):
         try:
             ser.open()
 
-        except :
+        except:
             __port_error = 1
 
         self.ser = ser

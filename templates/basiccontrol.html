@@ -1,12 +1,9 @@
-<div style="Width:90%;margin: auto;">
 
+<div style="Width:75%;margin: auto;display: block;overflow: auto;z-index: 990;">
 
-
-
+        <div id = "selectedVisual" class="brick12" style="sr_style;">---</div>
         <div class="brick6" style="sr_style" onclick="doControl('off');">OFF</div>
         <div class="brick6" style='sr_style' onclick="doControl('on');">ON</div>
-
-
         <div class="brick6" style='sr_style' onclick="doControl('down');">DOWN</div>
         <div class="brick6" style='sr_style' onclick="doControl('up');">UP</div>
 
@@ -22,7 +19,7 @@
         <div class="brick1" onclick="doSetArcLevel(207);"><div class="dimBrickInner" style="opacity:.83;"></div></div>
         <div class="brick1" onclick="doSetArcLevel(230);"><div class="dimBrickInner" style="opacity:.92;"></div></div>
         <div class="brick1" onclick="doSetArcLevel(254);"><div class="dimBrickInner" style="opacity:1;"></div></div>
-        <div id='scenes'></div>
+        <div id='scenes' style = "margin-bottom:15px;"></div>
 </div>
 
 
@@ -42,5 +39,12 @@
   font-size: 35px;
   box-sizing:border-box;
   height:90px;
+}
+#basicControl {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#render {
+  margin-top: 10px;
 }
   </style>

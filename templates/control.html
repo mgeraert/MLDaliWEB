@@ -174,7 +174,7 @@
 
     function getBallastItem(ballast_name, index) {
 
-        visualItem = "<div class='brick6'" +
+        visualItem = "<div class='brick12_ballast'" +
             " onclick = 'doSelectBallast($index)'>$visual_name</div>";
 
 
@@ -214,9 +214,8 @@
 </head>
 
 <body background="static/bg/11.jpg">
-    <div id='menu'></div>
     <div style="Width:90%;margin: auto;">
-        <div id='render' ></div>
+        <div id='render' style="display: block;overflow: auto;"></div>
     </div>
 
     <div id='basicControl'></div>

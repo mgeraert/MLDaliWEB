@@ -3,13 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue_visual.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_visual.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/DaliChannel.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/DaliChannels.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/createdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/createdb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doControl.py" beforeDir="false" afterPath="$PROJECT_DIR$/doControl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daliconfig.db" beforeDir="false" afterPath="$PROJECT_DIR$/daliconfig.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/bricks.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/bricks.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/basiccontrol.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/basiccontrol.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/control.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/control.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +113,19 @@
       <option name="presentableId" value="Default" />
       <updated>1546888024394</updated>
     </task>
+    <task id="LOCAL-00001" summary="Serial port problem solved">
+      <created>1607276818732</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1607276818732</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Serial port problem solved" />
+    <option name="LAST_COMMIT_MESSAGE" value="Serial port problem solved" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1988" y="382" key="#Notifications" timestamp="1602010672623">
@@ -130,6 +140,10 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="2380" y="466" key="#xdebugger.XInspectDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1603299957513" />
+    <state x="2104" y="307" key="CommitChangelistDialog2" timestamp="1607276818413">
+      <screen x="0" y="0" width="3440" height="1400" />
+    </state>
+    <state x="2104" y="307" key="CommitChangelistDialog2/0.0.3440.1400@0.0.3440.1400" timestamp="1607276818413" />
     <state width="719" height="466" key="DebuggerActiveHint" timestamp="1604605430957">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -138,38 +152,38 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="2164" y="465" key="FileChooserDialogImpl/0.0.3440.1400@0.0.3440.1400" timestamp="1603009624522" />
-    <state width="1828" height="459" key="GridCell.Tab.0.bottom" timestamp="1606850590478">
+    <state width="1716" height="273" key="GridCell.Tab.0.bottom" timestamp="1607453385121">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
-    <state width="1828" height="459" key="GridCell.Tab.0.center" timestamp="1606850590478">
+    <state width="1716" height="273" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
+    <state width="1716" height="273" key="GridCell.Tab.0.center" timestamp="1607453385121">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
-    <state width="1828" height="459" key="GridCell.Tab.0.left" timestamp="1606850590478">
+    <state width="1716" height="273" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
+    <state width="1716" height="273" key="GridCell.Tab.0.left" timestamp="1607453385121">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
-    <state width="1828" height="459" key="GridCell.Tab.0.right" timestamp="1606850590478">
+    <state width="1716" height="273" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
+    <state width="1716" height="273" key="GridCell.Tab.0.right" timestamp="1607453385121">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1606850590478" />
-    <state width="1828" height="459" key="GridCell.Tab.1.bottom" timestamp="1606850591435">
+    <state width="1716" height="273" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
+    <state width="1716" height="459" key="GridCell.Tab.1.bottom" timestamp="1607453318538">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
-    <state width="1828" height="459" key="GridCell.Tab.1.center" timestamp="1606850591435">
+    <state width="1716" height="459" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
+    <state width="1716" height="459" key="GridCell.Tab.1.center" timestamp="1607453318538">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
-    <state width="1828" height="459" key="GridCell.Tab.1.left" timestamp="1606850591435">
+    <state width="1716" height="459" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
+    <state width="1716" height="459" key="GridCell.Tab.1.left" timestamp="1607453318538">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
-    <state width="1828" height="459" key="GridCell.Tab.1.right" timestamp="1606850591435">
+    <state width="1716" height="459" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
+    <state width="1716" height="459" key="GridCell.Tab.1.right" timestamp="1607453318538">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1828" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1606850591435" />
+    <state width="1716" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
     <state x="1397" y="409" key="SettingsEditor" timestamp="1607267029306">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -178,10 +192,10 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.3440.1400@0.0.3440.1400" timestamp="1603908063168" />
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1607166738728">
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1607448964198">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1607166738728" />
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1607448964198" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -198,8 +212,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classes/DaliChannel.py</url>
-          <line>24</line>
-          <option name="timeStamp" value="143" />
+          <line>34</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/DaliChannel.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="147" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

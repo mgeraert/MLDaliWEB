@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/DaliChannel.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daliconfig.db" beforeDir="false" afterPath="$PROJECT_DIR$/daliconfig.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/bricks.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/bricks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/basiccontrol.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/basiccontrol.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/control.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/control.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Database.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +84,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\marcg\PycharmProjects\flasktest\__init__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,38 +148,38 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state x="2164" y="465" key="FileChooserDialogImpl/0.0.3440.1400@0.0.3440.1400" timestamp="1603009624522" />
-    <state width="1716" height="273" key="GridCell.Tab.0.bottom" timestamp="1607453385121">
+    <state width="1828" height="273" key="GridCell.Tab.0.bottom" timestamp="1608574591383">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="273" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
-    <state width="1716" height="273" key="GridCell.Tab.0.center" timestamp="1607453385121">
+    <state width="1828" height="273" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1608574591383" />
+    <state width="1828" height="273" key="GridCell.Tab.0.center" timestamp="1608574591383">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="273" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
-    <state width="1716" height="273" key="GridCell.Tab.0.left" timestamp="1607453385121">
+    <state width="1828" height="273" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1608574591383" />
+    <state width="1828" height="273" key="GridCell.Tab.0.left" timestamp="1608574591383">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="273" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
-    <state width="1716" height="273" key="GridCell.Tab.0.right" timestamp="1607453385121">
+    <state width="1828" height="273" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1608574591383" />
+    <state width="1828" height="273" key="GridCell.Tab.0.right" timestamp="1608574591383">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="273" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1607453385121" />
-    <state width="1716" height="459" key="GridCell.Tab.1.bottom" timestamp="1607453318538">
+    <state width="1828" height="273" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1608574591383" />
+    <state width="1716" height="459" key="GridCell.Tab.1.bottom" timestamp="1607543670869">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="459" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
-    <state width="1716" height="459" key="GridCell.Tab.1.center" timestamp="1607453318538">
+    <state width="1716" height="459" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1607543670869" />
+    <state width="1716" height="459" key="GridCell.Tab.1.center" timestamp="1607543670869">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="459" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
-    <state width="1716" height="459" key="GridCell.Tab.1.left" timestamp="1607453318538">
+    <state width="1716" height="459" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1607543670869" />
+    <state width="1716" height="459" key="GridCell.Tab.1.left" timestamp="1607543670869">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="459" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
-    <state width="1716" height="459" key="GridCell.Tab.1.right" timestamp="1607453318538">
+    <state width="1716" height="459" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1607543670869" />
+    <state width="1716" height="459" key="GridCell.Tab.1.right" timestamp="1607543670869">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1716" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1607453318538" />
+    <state width="1716" height="459" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1607543670869" />
     <state x="1397" y="409" key="SettingsEditor" timestamp="1607267029306">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
@@ -192,10 +188,10 @@
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.3440.1400@0.0.3440.1400" timestamp="1603908063168" />
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1607448964198">
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1607964937958">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1607448964198" />
+    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1607964937958" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

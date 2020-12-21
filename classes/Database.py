@@ -1,5 +1,5 @@
 import sqlite3
-
+import os
 
 def dict_factory(cursor, row):
     d = {}
@@ -12,9 +12,9 @@ class Database(object):
         def __init__(self):
             import configparser
             config = configparser.ConfigParser()
-            config.read('mlconfig.ini')
+            config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.conn = sqlite3.connect(self.db_f_name)
+            self.conn = sqlite3.connect(os.getcwd() + os.path.sep  + self.db_f_name)
 
 
         def create_table(self, table_name):

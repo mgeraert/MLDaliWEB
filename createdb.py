@@ -77,7 +77,7 @@ columns = ["scene_group_id number INTEGER",
             "scene_value INTEGER DEFAULT 255",
             "scene_sort_order INTEGER"]
 
-db.insert_columns( table_name, columns)
+db.insert_columns(table_name, columns)
 
 # ********************************************************
 
@@ -100,6 +100,68 @@ table_name = 'pages'
 db.create_table(table_name)
 columns = ["page_name TEXT DEFAULT ''",
             "page_sort_order INTEGER DEFAULT 0"]
+
+db.insert_columns( table_name, columns)
+
+# ********************************************************
+
+table_name = 'virtual_group'
+
+db.create_table(table_name)
+columns = ["name TEXT DEFAULT ''"]
+
+# ********************************************************
+
+table_name = 'virtual_group_items'
+
+db.create_table(table_name)
+columns = ["ballast_id INTEGER DEFAULT ''"]
+db.insert_columns( table_name, columns)
+# ********************************************************
+
+table_name = 'dali_action'
+
+db.create_table(table_name)
+columns = ["dali_action_is_ballast INTEGER",
+            "dali_action_is_group INTEGER",
+            "dali_action_is_broadcast INTEGER",
+            "dali_action_is_command INTEGER DEFAULT 1",
+            "dali_action_command INTEGER DEFAULT 1",
+            "dali_action_arc_level INTEGER DEFAULT 1"]
+
+db.insert_columns( table_name, columns)
+
+# ********************************************************
+
+table_name = 'dali_event'
+
+db.create_table(table_name)
+columns = ["dali_event_name INTEGER",
+            "dali_event_is_fixed_time INTEGER",
+            "dali_event_is_change INTEGER",
+            "dali_event_hour INTEGER",
+            "dali_event_minute INTEGER",
+            "dali_event_on_sun_rise INTEGER",
+            "dali_event_on_sun_set INTEGER",
+            "dali_event_on_leaving INTEGER",
+            "dali_event_on_entering INTEGER",
+            "dali_event_on_waking INTEGER",
+            "dali_event_on_left INTEGER",
+            "dali_event_on_sleep INTEGER",
+            "dali_event_valid_on_monday INTEGER",
+            "dali_event_valid_on_tuesday INTEGER",
+            "dali_event_valid_on_wednesday INTEGER",
+            "dali_event_valid_on_thursday INTEGER",
+            "dali_event_valid_on_friday INTEGER",
+            "dali_event_valid_on_saturday INTEGER",
+            "dali_event_valid_on_sunday INTEGER",
+            "dali_event_valid_on_occupied INTEGER",
+            "dali_event_valid_on_empty INTEGER",
+            "dali_event_valid_on_sleep INTEGER",
+            "dali_event_valid_on_leaving INTEGER",
+            "dali_event_valid_on_going_to_sleep INTEGER",
+            "dali_event_valid_on_light INTEGER",
+           "dali_event_valid_on_dark INTEGER"]
 
 db.insert_columns( table_name, columns)
 

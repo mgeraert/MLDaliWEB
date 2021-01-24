@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Virtual groups</title>
+
+    <!-- Bootstrap -->
+
+    <style>
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <script>
+
+        var virtual_groups;
+
+        $(document).ready(function () {
+
+            getVirtualGroups();
+
+
+        });
+
+        function getVirtualGroups() {
+                a = 1;
+                $.get("/getVirtualGroups", function (data, status) {
+                    virtual_groups = JSON.parse(data);
+
+                    $('#virtual_groups_list') .empty();
+
+                    $.each(virtual_groups, function (i, item) {
+                        $('#virtual_groups_list').append($('<option>', {
+                            value: item.ID,
+                            text: item.name
+                        }));
+                    });
+                });
+            }
+
+            function AddGroup(){
+                group_name = $('#group_name').text;
+
+            }
+
+    </script>
+
+</head>
+
+<body>
+
+
+    <div style="Width:90%;margin: auto;">
+        <H1>Virtual groups</H1>
+        <select id="virtual_groups_list" size="10" style="width: 350px;"></select>
+        <br>
+        <div style="margin-top: 10px;">
+        <label for="fname">New group:</label>
+        <input type="text" id="group_name" name="group_name">
+        <button type="button" onclick="AddGroup">Add</button>
+        </div>
+    </div>
+</body>
+
+</html>

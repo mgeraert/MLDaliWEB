@@ -5,27 +5,30 @@ import glob
 import serial.tools.list_ports as port_list
 import serial
 import json
+import createdb
 from classes.DaliChannels import DaliChannels
 from classes.DaliChannel import AddressModes
 
 from blue_pages import pages
 from blue_visual import visual
+from blue_virtual_group import virtual_group
+from blue_updater import updatr
 
 app = Flask(__name__)
 app.register_blueprint(pages)
 app.register_blueprint(visual)
-dcs = DaliChannels()
+app.register_blueprint(virtual_group)
+app.register_blueprint(updatr)
 
+dcs = DaliChannels()
 
 @app.route("/groups")
 def beneden():
     return render_template('groups.html')
 
-
 @app.route("/ballasts")
 def ballasts():
     return render_template('ballasts.html')
-
 
 @app.route("/visuals")
 def visuals():
@@ -35,45 +38,41 @@ def visuals():
 def channels():
     return render_template('channels.html')
 
+@app.route("/virtual_groups")
+def virtual_groups():
+    return render_template('virtual_groups.html')
+
 @app.route("/ballasts_per_group")
 def ballasts_per_group():
     return render_template('ballast_per_group.html')
-
 
 @app.route("/scenes")
 def scenes():
     return render_template('scenes.html')
 
-
 @app.route("/bstest")
 def bstest():
     return render_template('bstest.html')
-
 
 @app.route("/settings")
 def settings():
     return render_template('settings.html')
 
-
 @app.route('/index')
 def index():
     return render_template('index.html')
-
 
 @app.route('/control', methods=['GET'])
 def contol():
     return render_template('control.html')
 
-
 @app.route("/navbar")
 def navbar():
     return render_template('navbar.html')
 
-
 @app.route("/basicControl")
 def basic_control():
     return render_template('basiccontrol.html')
-
 
 @app.route("/ballasts_get")
 def ballasts_get():

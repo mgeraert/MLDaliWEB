@@ -18,21 +18,26 @@
     <meta name="mobile-web-app-capable" content="yes">
 
     <script>
-            function Update() {
-
-            $.get("/Update?" , function (data, status) {
+        function Update() {
+            a=1;
+            $.get("/update", function (data, status) {
                 answer = JSON.parse(data);
             });
         }
     </script>
+
 
 </head>
 
 <body>
     <div style="Width:90%;margin: auto;">
         <H1>Updater</H1>
-        <button type="button" onclick="update">Update</button>
+        <button type="button" onclick="Update()">Update</button>
     </div>
+
+
+
+
 </body>
 
 </html>

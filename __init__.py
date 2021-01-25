@@ -5,6 +5,8 @@ import glob
 import serial.tools.list_ports as port_list
 import serial
 import json
+import platform
+import os
 import createdb
 from classes.DaliChannels import DaliChannels
 from classes.DaliChannel import AddressModes
@@ -33,6 +35,20 @@ def ballasts():
 @app.route("/visuals")
 def visuals():
     return render_template('visuals.html')
+
+@app.route("/various_info")
+def various_info():
+
+    current_os = platform.system()
+    out_string = 'Current OS: ' + current_os + '\r\n'
+    current_os= current_os.lower()
+
+    if current_os == 'windows':
+        out_string = out_string + 'Windows ini file path' + '\r\n'
+        out_string = out_string + os.getcwd() + os.path.sep + 'mlconfig.ini' + '\r\n'
+    else:
+        out_string = out_string + 'Linux ini file path' + '\r\n'
+        out_string = out_string + os.getcwd() + os.path.sep + 'mlconfig.ini' + '\r\n'
 
 @app.route("/channels")
 def channels():

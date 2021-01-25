@@ -12,5 +12,5 @@ def updater():
 @updatr.route("/update")
 def update():
     Repo.clone_from('https://github.com/mgeraert/MLDaliWEB.git',
-                    r'C:\Users\marcg\OneDrive\Documents\updatetest',
+                    r'/var/www/webApp/webApp/',
                     recursive=True)

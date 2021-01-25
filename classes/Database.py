@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import platform
 
 def dict_factory(cursor, row):
     d = {}
@@ -12,7 +13,13 @@ class Database(object):
         def __init__(self):
             import configparser
             config = configparser.ConfigParser()
-            config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
+            current_os = platform.system().lower()
+
+            if current_os.lower() == "windows":
+                config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
+            else:
+                config.read('/var/www/webApp/webApp/mlconfig.ini')
+
             self.db_f_name = config['DEFAULT']['db_f_name']
             self.conn = sqlite3.connect(os.getcwd() + os.path.sep  + self.db_f_name)
 

@@ -98,6 +98,9 @@ table_name = 'pages'
 
 db.create_table(table_name)
 columns = ["page_name TEXT DEFAULT ''",
+            "page_control_type INTEGER DEFAULT 0",
+            "page_font_size INTEGER DEFAULT 15",
+            "page_button_height INTEGER DEFAULT 30",
             "page_sort_order INTEGER DEFAULT 0"]
 
 db.insert_columns( table_name, columns)
@@ -114,7 +117,8 @@ columns = ["name TEXT DEFAULT ''"]
 table_name = 'virtual_group_items'
 
 db.create_table(table_name)
-columns = ["ballast_id INTEGER DEFAULT ''"]
+columns = ["ballast_id INTEGER DEFAULT ''",
+           "virtual_group_ID INTEGER"]
 db.insert_columns( table_name, columns)
 # ********************************************************
 

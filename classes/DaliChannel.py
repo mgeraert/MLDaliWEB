@@ -130,6 +130,17 @@ class DaliChannel(object):
 
         self.send_over_dali(self.get_address(), scene_number + 16)
 
+    def scene_number(self, scene_number):
+        self.__direct_arc_enabled = 0
+
+        if scene_number < 0:
+            scene_number = 0
+
+        if scene_number > 15:
+            scene_number = 15
+
+        self.send_over_dali(self.get_address(), scene_number + 16)
+
     def query(self, query_nr):
         self.ser.flush()
         self.__direct_arc_enabled = 0

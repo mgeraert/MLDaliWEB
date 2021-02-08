@@ -8,7 +8,6 @@ updatr = Blueprint('updater', __name__)
 def updater():
     return render_template('updater.html')
 
-
 @updatr.route("/update")
 def update():
     Repo.clone_from('https://github.com/mgeraert/MLDaliWEB.git',

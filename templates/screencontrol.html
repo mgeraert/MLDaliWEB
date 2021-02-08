@@ -1,0 +1,41 @@
+
+<div style="Width:75%;margin: auto;display: block;overflow: auto;z-index: 990;">
+
+        <div id = "selectedVisual" class="brick12" style="sr_style;">---</div>
+        <div class="brick6" style="sr_style" onclick="doSelectSceneNumber(8);">100% ↓</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(9);">100% ↑</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(10);">90% ↓</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(11);">90% ↑</div>
+        <div class="brick6" style="sr_style" onclick="doSelectSceneNumber(12);">50% ↓</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(13);">50% ↑</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(14);">10% ↓</div>
+        <div class="brick6" style='sr_style' onclick="doSelectSceneNumber(15);">10% ↑</div>
+
+        <div id='scenes' style = "margin-bottom:15px;"></div>
+</div>
+
+
+<style>
+.dimBrickInner {
+  background-color: white;
+  width:calc(8.3333%-8px);
+  height:86px;
+}
+.brickOuter {
+  color: white;
+  border: 2px solid white;
+  margin: 2px;
+  width: calc(8.333333% - 4px);
+  text-align: center;
+  font-size: 35px;
+  box-sizing:border-box;
+  height:90px;
+}
+#basicControl {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#render {
+  margin-top: 10px;
+}
+  </style>

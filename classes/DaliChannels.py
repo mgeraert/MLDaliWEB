@@ -1,7 +1,7 @@
 
 from classes.Database import Database
 from classes.DaliChannel import DaliChannel, AddressModes
-
+import time
 
 class DaliChannels(object):
 
@@ -106,6 +106,19 @@ class DaliChannels(object):
             channel.set_address_mode(AddressModes.ballast)
             channel.set_direct_arc_enabled(0)
             channel.do_command(action)
+        elif visual_item.get('visual_type') == 4:
+            sql_string= "SELECT * FROM virtual_group_items WHERE virtual_group_id=" + str(visual_item.get('visual_ID_of_type'))
+            data = db.get_sql_data(sql_string)
+            for virtual_group_item in data:
+                sql_string = "SELECT * FROM ballasts WHERE ID=" + str(virtual_group_item.get('ballast_id'))
+                ballast = db.get_sql_data(sql_string)
+                channel = self.get_chan(ballast[0].get('ballast_channel'))
+                channel.set_ballast_or_group_address(ballast[0].get('ballast_short_address'))
+                channel.set_address_mode(AddressModes.ballast)
+                channel.set_direct_arc_enabled(0)
+                channel.do_command(action)
+                time.sleep(.08)
+
         return 'http200'
 
     def do_control_ballast(self, action, ballastID):
@@ -174,4 +187,18 @@ class DaliChannels(object):
             channel.set_ballast_or_group_address(ballast.get('ballast_short_address'))
             channel.set_address_mode(AddressModes.ballast)
             channel.dali_goto_scene(scene_number)
+        elif visual_item.get('visual_type') == 4:
+            sql_string = "SELECT * FROM virtual_group_items WHERE virtual_group_id=" + str(
+                visual_item.get('visual_ID_of_type'))
+            data = db.get_sql_data(sql_string)
+            for virtual_group_item in data:
+                sql_string = "SELECT * FROM ballasts WHERE ID=" + str(virtual_group_item.get('ballast_id'))
+                ballast = db.get_sql_data(sql_string)
+                channel = self.get_chan(ballast[0].get('ballast_channel'))
+                channel.set_ballast_or_group_address(ballast[0].get('ballast_short_address'))
+                channel.set_address_mode(AddressModes.ballast)
+                channel.set_direct_arc_enabled(0)
+                channel.dali_goto_scene(scene_number)
+                time.sleep(.08)
+
         return 'http200'

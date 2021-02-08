@@ -14,12 +14,30 @@
 
     </style>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta name="mobile-web-app-capable" content="yes">
 
     <script>
+
+        $(document).ready(function () {
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Ballasts')").addClass("active");
+            });
+
+            getVirtualGroups();
+
+        });
+
+
+
         function Update() {
-            a=1;
+            a = 1;
             $.get("/update", function (data, status) {
                 answer = JSON.parse(data);
             });
@@ -30,6 +48,8 @@
 </head>
 
 <body>
+
+    <div id='menu'></div>
     <div style="Width:90%;margin: auto;">
         <H1>Updater</H1>
         <button type="button" onclick="Update()">Update</button>
@@ -37,7 +57,10 @@
 
 
 
-
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
 </body>
 
 </html>

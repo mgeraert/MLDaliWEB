@@ -10,62 +10,202 @@
 
     <!-- Bootstrap -->
 
-    <style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ml_style1.css') }}">
 
-    </style>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <meta name="mobile-web-app-capable" content="yes">
 
     <script>
 
         var virtual_groups;
+        var channels;
+        var selectedGroup;
+        var ballast;
+        var groupItems;
 
         $(document).ready(function () {
 
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Ballasts')").addClass("active");
+            });
+
             getVirtualGroups();
 
-
+            $.get("/channels_get", function (data, status) {
+                channels = JSON.parse(data);
+                $.each(channels, function (i, item) {
+                    $('#channel').append($('<option>', {
+                        value: item.ID,
+                        text: item.channel_name
+                    }));
+                });
+            });
         });
 
         function getVirtualGroups() {
-                a = 1;
-                $.get("/getVirtualGroups", function (data, status) {
-                    virtual_groups = JSON.parse(data);
 
-                    $('#virtual_groups_list') .empty();
+            $.get("/getVirtualGroups", function (data, status) {
+                virtual_groups = JSON.parse(data);
 
-                    $.each(virtual_groups, function (i, item) {
-                        $('#virtual_groups_list').append($('<option>', {
+                $('#virtual_groups_list').empty();
+
+                $.each(virtual_groups, function (i, item) {
+                    $('#virtual_groups_list').append($('<option>', {
+                        value: item.ID,
+                        text: item.name
+                    }));
+                });
+            });
+        }
+
+        function AddGroup() {
+            group_name = $('#group_name').val();
+
+            $.get("/InsertVirtualGroup?group_name=" + group_name, function (data, status) {
+                if (data.localeCompare("http200") == 0) {
+                    getVirtualGroups();
+                    $('#group_name').empty();
+                }
+            });
+        }
+
+        function SelectItem() {
+            selectedIndex = $('#virtual_groups_list').prop('selectedIndex');
+            selectedChannelIndex = $('#channel').prop('selectedIndex');
+            if (selectedIndex > -1) {
+                selectedGroup = virtual_groups[selectedIndex];
+                $('#group_name').val(selectedGroup.name);
+                $.get("/GetBallastNotInGroup?virtual_group_id=" + selectedGroup.ID + '&channel_number=' + channels[selectedChannelIndex].channel_nr, function (data, status) {
+                    ballasts = JSON.parse(data);
+
+                    $('#ballasts').empty();
+
+                    $.each(ballasts, function (i, item) {
+                        $('#ballasts').append($('<option>', {
                             value: item.ID,
-                            text: item.name
+                            text: item.BallastID + ' ' + item.ballast_name
+                        }));
+                    });
+                });
+
+
+                $.get("/GetBallastInGroup?virtual_group_id=" + selectedGroup.ID + '&channel_number=' + channels[selectedChannelIndex].channel_nr, function (data, status) {
+                    groupItems = JSON.parse(data);
+
+                    $('#group_items').empty();
+
+                    $.each(groupItems, function (i, item) {
+                        $('#group_items').append($('<option>', {
+                            value: item.ID,
+                            text: item.BallastID + ' ' + item.ballast_name
                         }));
                     });
                 });
             }
+        }
 
-            function AddGroup(){
-                group_name = $('#group_name').text;
+        function RemoveGroup() {
+            selectedIndex = $('#virtual_groups_list').prop('selectedIndex');
+            if (selectedIndex > -1) {
+                selectedGroupItem = virtual_groups[selectedIndex];
 
+                $.get("/RemoveVirtualGroup?virtual_group_id=" + selectedGroupItem.ID, function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        getVirtualGroups();
+                        $('#group_name').empty();
+                    }
+                });
             }
+        }
+
+        function RenameGroup() {
+            selectedIndex = $('#virtual_groups_list').prop('selectedIndex');
+            if (selectedIndex > -1) {
+                selectedGroupItem = virtual_groups[selectedIndex];
+
+                $.get("/RenameVirtualGroup?virtual_group_id=" + selectedGroupItem.ID + "&new_name=" + $('#group_name').val(), function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        getVirtualGroups();
+                        $('#group_name').empty();
+                    }
+                });
+            }
+        }
+
+        function Add2Group() {
+            selectedBallastIndex = $('#ballasts').prop('selectedIndex');
+            if (selectedBallastIndex > -1) {
+                $.get("/AddBallastToVirtualGroup?virtual_group_id=" + selectedGroup.ID + "&ballast_id=" + ballasts[selectedBallastIndex].BallastID, function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        SelectItem();
+                    }
+                });
+            }
+        }
+
+        function RemoveFromGroup() {
+            selectedGroupItemIndex = $('#group_items').prop('selectedIndex');
+            if (selectedGroupItemIndex > -1) {
+                $.get("/RemoveBallastFromVirtualGroup?virtual_group_id=" + selectedGroup.ID + "&ballast_id=" + groupItems[selectedGroupItemIndex].BallastID, function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        SelectItem();
+                    }
+                });
+            }
+        }
+
 
     </script>
 
 </head>
 
 <body>
+    <div id='menu'></div>
 
-
-    <div style="Width:90%;margin: auto;">
+    <div class="widePanel" style="width:900px;">
         <H1>Virtual groups</H1>
-        <select id="virtual_groups_list" size="10" style="width: 350px;"></select>
+        <select id="virtual_groups_list" size="10" style="width: 350px;" onclick="SelectItem()"></select>
+        <button type="button" class="mlbutton" onclick="RemoveGroup()">Remove</button>
         <br>
         <div style="margin-top: 10px;">
-        <label for="fname">New group:</label>
-        <input type="text" id="group_name" name="group_name">
-        <button type="button" onclick="AddGroup">Add</button>
+            <label for="group_name">New group:</label>
+            <input type="text" id="group_name">
+            <button type="button" class="mlbutton" onclick="AddGroup()">Add</button>
+            <button type="button" class="mlbutton" onclick="RenameGroup()">Rename</button>
         </div>
+
     </div>
+    <div class="widePanel" style="margin-top: 10px;position: relative;height:450px;width:900px;">
+
+        <label for="fname">Channel</label>
+        <select name="channel" id="channel" style="width: 120px"></select>
+        <br>
+
+        <label for="ballasts" style="position:absolute;top:28px;left:8px">Ballasts</label>
+        <select id="ballasts" size="20" style="position:absolute; top:58px; left:8px; width: 350px;"></select>
+
+        <button type="button" style="position:absolute;top:200px;left:390px;width: 100px;" class="mlbutton"
+            onclick="Add2Group()">Add →</button>
+        <button type="button" style="position:absolute;top:250px;left:390px;width: 100px;" class="mlbutton"
+            onclick="RemoveFromGroup()">← Remove</button>
+
+        <label for="group_items" style="position:absolute;top:28px;left:520px">Group Items</label>
+        <select id="group_items" size="20" style="position:absolute; top:58px; left:520px; width: 350px;"></select>
+
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js') }}"></script>
+
+
 </body>
 
 </html>

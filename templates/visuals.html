@@ -12,8 +12,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <!-- Bootstrap -->
-	<meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bricks.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ml_style1.css') }}">
 
     <style>
         /* Remove default bullets */
@@ -59,15 +60,20 @@
         var previousTreeType = 0
         var ulIndex = 0;
         var ulID = '';
-        var g_pages;
-        var g_selectedPageIndex;
+        var g_Pages;
+        var g_SelectedPageIndex;
         var g_selectedVisualID;
         var g_selectedVisualName;
         var g_bgColor = 'black';
         var g_SelectedColor = 'gray';
         var pageID = 1;
+        var g_VirtualGroups;
+        var g_Groups;
+        var g_Ballasts;
+        var g_DaliChannels;
 
-        function getVisuals(pageID) {
+        function getVisuals() {
+            pageID = g_Pages[g_SelectedPageIndex].ID;
             Height = $('#render').css("height");
             //$('#render').css('min-height',Height)
             $('#render').empty();
@@ -110,60 +116,7 @@
             return visualItem;
         }
 
-        function getTree() {
-            $.get("/get_tree", function (data, status) {
-                $('#tree').empty();
-                tree = JSON.parse(data);
-                ulID = 'tree' + ulIndex.toString()
-                var listHTML = "<ul id='" + ulID + "'>";
-
-                for (var index = 0; index < tree.length; index++) {
-                    var tree_item = tree[index];
-                    listHTML = listHTML + getTreeItem(tree_item.name, tree_item.id_of_type, tree_item.type, index);
-                }
-                listHTML = listHTML + '</ul>'
-                $('#tree').html(listHTML);
-            });
-        }
-
-        function getTreeItem(name, id_of_type, type, index) {
-
-            var treeItem;
-
-            if (type > previousTreeType) {
-                ulIndex = ulIndex + 1;
-                ulID = 'tree' + ulIndex.toString();
-            }
-
-            if (type > 2) {
-                treeItem = `
-            <li id='$ID$' style='display:none;'><div onclick ='treeItemOnClick($index$, this)' 
-            onmouseover="" style="cursor: pointer;">$name$</div></li>`;
-            } else {
-                treeItem = `
-                <li id='$ID$'><span class="badge" style="cursor: pointer;" onclick ='treeItemToggleClick(\"$ULID$\", this);'>+</span>
-            <div onclick ='treeItemOnClick($index$, this);' 
-            onmouseover="" style="cursor: pointer; display: inline-block;padding-left: 5px;">$name$</div></li>`;
-            }
-
-            treeItem = treeItem.replace('$index$', index);
-            treeItem = treeItem.replace('$ID$', 'li' + index);
-            treeItem = treeItem.replace('$ULID$', 'tree' + (ulIndex + 1).toString());
-            treeItem = treeItem.replace('$name$', name);
-
-            if (type > previousTreeType) {
-                li = "<ul id='" + ulID + "'>" + treeItem;
-            }
-            else if (type < previousTreeType) { li = '</ul>' + treeItem; }
-            else { li = treeItem }
-
-            previousTreeType = type;
-            return li;
-
-        }
-
         $(document).ready(function () {
-
 
             $('#menu').load('/navbar', function () {
                 $('#menubar').find("li").each(function (index) {
@@ -172,29 +125,196 @@
                 $("li:contains('Visuals')").addClass("active");
             });
 
-            $.get("/getPages", function (data, status) {
-                g_pages = JSON.parse(data);
-                pagesHTML = "<select $onClick>";
-                for (var index = 0; index < g_pages.length; index++) {
-                    var page = g_pages[index];
-                    pagesHTML = pagesHTML + '<option>' + page.page_name + '</option>';
+            loadPages();
+
+
+
+            $.get("/GetChannels", function (data, status) {
+                g_DaliChannels = JSON.parse(data);
+                if (g_DaliChannels.length > 0) {
+                    $.each(g_DaliChannels, function (i, item) {
+                        $('#channels').append($('<option>', {
+                            value: item.ID,
+                            text: item.channel_name
+                        }));
+                    });
+                    $('#channels option')[0].selected = true;
+                    selectChannel();
                 }
-
-                pagesHTML = pagesHTML.replace('$onClick', "onclick='doSelectPage(this.selectedIndex)';");
-                pagesHTML = pagesHTML + "</select>";
-                $('#pages').html(pagesHTML);
-
             });
+
+            getVirtualGroups();
         });
 
-        function doSelectPage(index) {
-            $('.jumbotron').css("display", "block");
-            g_selectedPageIndex = index;
-            pageID = g_pages[g_selectedPageIndex].ID;
-            getTree();
-            getVisuals(pageID);
+
+        function loadPages() {
+            $.get("/getPages", function (data, status) {
+                $('#pages').empty();
+                g_Pages = JSON.parse(data);
+                if (g_Pages.length > 0) {
+                    $.each(g_Pages, function (i, item) {
+                        $('#pages').append($('<option>', {
+                            value: item.ID,
+                            text: item.page_name
+                        }));
+                    });
+                    $('#pages option')[0].selected = true;
+                    getVisuals();
+                    g_SelectedPageIndex = 0;
+                }
+            });
         }
 
+        function getVirtualGroups() {
+
+            $.get("/getVirtualGroups", function (data, status) {
+                g_VirtualGroups = JSON.parse(data);
+
+                $('#group_items').empty();
+
+                $.each(g_VirtualGroups, function (i, item) {
+                    $('#virtual_groups').append($('<option>', {
+                        value: item.ID,
+                        text: item.name
+                    }));
+                });
+            });
+        }
+
+        function doSelectPage() {
+            g_SelectedPageIndex = $('#pages').prop('selectedIndex');
+            pageID = g_Pages[g_SelectedPageIndex].ID;
+            $('#page_name:text').val(g_Pages[g_SelectedPageIndex].page_name);
+            $('#page_font_size:text').val(g_Pages[g_SelectedPageIndex].page_font_size);
+            $('#page_button_height:text').val(g_Pages[g_SelectedPageIndex].page_button_height);
+            getVisuals();
+        }
+
+        function selectChannel() {
+            selectedIndex = $('#channels').prop('selectedIndex');
+            if (selectedIndex > -1) {
+                channel = g_DaliChannels[selectedIndex];
+
+                $.get("/groups_get?channel=1", function (data, status) {
+                    g_Groups = JSON.parse(data);
+                    $.each(g_Groups, function (i, item) {
+                        $('#groups').append($('<option>', {
+                            value: item.ID,
+                            text: item.dali_group_number + ' ' + item.dali_group_name
+                        }));
+                    });
+                });
+
+                $.get("/ballasts_get?channel=1", function (data, status) {
+                    g_Ballasts = JSON.parse(data);
+                    $.each(g_Ballasts, function (i, item) {
+                        $('#ballasts').append($('<option>', {
+                            value: item.ID,
+                            text: item.ballast_short_address + ' ' + item.ballast_name
+                        }));
+                    });
+                });
+            }
+        }
+
+        function addGroup() {
+
+            selectedIndex = $('#groups').prop('selectedIndex');
+
+            if (selectedIndex < 0) {
+                alert('Select group first.')
+                return;
+            }
+
+            visualPageID = g_Pages[g_SelectedPageIndex].ID;
+            group = g_Groups[selectedIndex];
+            XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
+            XHRString = XHRString.replace('arg1', 'visual_name=' + group.name + '&');
+            XHRString = XHRString.replace('arg2', 'visual_page_ID=' + visualPageID.toString() + '&');
+            XHRString = XHRString.replace('arg3', 'visual_type=2&');
+            XHRString = XHRString.replace('arg4', 'visual_columns=' + '12' + '&');
+            XHRString = XHRString.replace('arg5', 'visual_ID_of_type=' + group.ID);
+
+            $.get(XHRString, function (data, status) {
+                getVisuals();
+            });
+        }
+
+        function addPage() {
+
+            $.get("/InsertPage", function (data, status) {
+                if (data.localeCompare('http200') == 0) {
+                    loadPages();
+                }
+            });
+        }
+
+        function savePage(){
+            page_id  = g_Pages[g_SelectedPageIndex].ID;
+            page_name = $('#page_name').val();
+            page_font_size = $('#page_font_size').val();
+            page_button_height = $('#page_button_height').val();
+
+            argString = "?page_name=" + page_name + 
+                        "&page_font_size=" + page_font_size + 
+                        "&page_button_height=" + page_button_height +
+                        "&page_id=" + page_id.toString();
+
+            $.get("/UpdatePage" + argString, function (data, status) {
+                if (data.localeCompare('http200') == 0) {
+                    loadPages();
+                }
+            });
+
+
+        }
+
+
+        function addBallast() {
+
+            selectedIndex = $('#ballasts').prop('selectedIndex');
+
+            if (selectedIndex < 0) {
+                alert('Select ballast first.')
+                return;
+            }
+
+            visualPageID = g_Pages[g_SelectedPageIndex].ID;
+            ballast = g_Ballasts[selectedIndex];
+            XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
+            XHRString = XHRString.replace('arg1', 'visual_name=' + ballast.ballast_name + '&');
+            XHRString = XHRString.replace('arg2', 'visual_page_ID=' + visualPageID.toString() + '&');
+            XHRString = XHRString.replace('arg3', 'visual_type=3&');
+            XHRString = XHRString.replace('arg4', 'visual_columns=' + '12' + '&');
+            XHRString = XHRString.replace('arg5', 'visual_ID_of_type=' + ballast.ID);
+
+            $.get(XHRString, function (data, status) {
+                getVisuals();
+            });
+        }
+
+        function addVirtualGroup() {
+
+            selectedIndex = $('#virtual_groups').prop('selectedIndex');
+
+            if (selectedIndex < 0) {
+                alert('Select virtual group first.')
+                return;
+            }
+
+            visualPageID = g_Pages[g_SelectedPageIndex].ID;
+            virtual_group_item = g_VirtualGroups[selectedIndex];
+            XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
+            XHRString = XHRString.replace('arg1', 'visual_name=' + virtual_group_item.name + '&');
+            XHRString = XHRString.replace('arg2', 'visual_page_ID=' + visualPageID.toString() + '&');
+            XHRString = XHRString.replace('arg3', 'visual_type=4&');
+            XHRString = XHRString.replace('arg4', 'visual_columns=' + '12' + '&');
+            XHRString = XHRString.replace('arg5', 'visual_ID_of_type=' + virtual_group_item.ID);
+
+            $.get(XHRString, function (data, status) {
+                getVisuals();
+            });
+        }
 
     </script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -211,18 +331,61 @@
 
     <div class="container">
 
-        <div style='padding:5px;'>Choose page: <div id='pages' style='padding:5px;'></div>
+
+        <div class='widePanel' style='height:220px;width:1000px;'>
+            <label for="pages" style="position:absolute;top:28px;left:10px">Pages</label>
+            <select id="pages" size="5" onClick="doSelectPage()"
+                style="position:absolute; top:58px; left:10px; width: 237px;height: 100px;"></select>
+            <button type="button" class="mlbutton" style="position:absolute; top:175px; left:10px; width:80px;"
+                onclick='addPage();'>Add</button>
+            <button type="button" class="mlbutton" style="position:absolute; top:175px; left:100px; width:80px;"
+                onclick='removePage();'>Remove</button>
+            <button type="button" class="mlbutton" style="position:absolute; top:175px; left:500px; width:80px;"
+                onclick='savePage();'>Save</button>
+
+            <label for="page_name" style="position:absolute;top:58px;left:310px">Name</label>
+            <input id="page_name" style="position:absolute; top:58px; left:360px; width:200px;"></input>
+
+            <label for="page_font_size" style="position:absolute;top:88px;left:290px">Font-size</label>
+            <input id="page_font_size" style="position:absolute; top:88px; left:360px; width:40px;"></input>
+            <label style="position:absolute;top:88px;left:410px">pixels</label>
+
+            <label for="page_button_height" style="position:absolute;top:118px;left:260px">Button height</label>
+            <input id="page_button_height" style="position:absolute; top:118px; left:360px; width:40px;"></input>
+            <label style="position:absolute;top:118px;left:410px">pixels</label>
+
         </div>
 
-        <div class="jumbotron" style='display:none;'>
-            <h2>Tree</h2>
-            <div id='tree' class="treeview"
-                style='background-color: white; overflow:scroll; height: 400px; width: 450px;'></div>
-            <button style='padding:5px;' type="button" class="btn btn-primary" onclick='addElement();'>Add</button>
+
+        <div class='widePanel' style='height:530px;width:1000px;'>
+
+            <label for="channels" style="position:absolute;top:28px;left:10px">Channels</label>
+            <select id="channels" size="5" onClick="selectChannel()"
+                style="position:absolute; top:58px; left:10px; width: 237px;height: 200px;"></select>
+
+            <label for="groups" style="position:absolute;top:28px;left:257px">Groups</label>
+            <select id="groups" size="20"
+                style="position:absolute; top:58px; left:257px; width: 237px;height: 400px;"></select>
+
+            <label for="ballasts" style="position:absolute;top:28px;left:504px">ballasts</label>
+            <select id="ballasts" size="20"
+                style="position:absolute; top:58px; left:504px; width: 237px;height: 400px;"></select>
+
+            <label for="virtual_groups" style="position:absolute;top:28px;left:751px">Virtual groups</label>
+            <select id="virtual_groups" size="20"
+                style="position:absolute; top:58px; left:750px; width: 237px;height: 400px;"></select>
+
+            <button type="button" class="mlbutton" style="position:absolute; top:475px; left:10px; "
+                onclick='addChannel();'>Add ↓</button>
+            <button type="button" class="mlbutton" style="position:absolute; top:475px; left:257px; "
+                onclick='addGroup();'>Add ↓</button>
+            <button type="button" class="mlbutton" style="position:absolute; top:475px; left:504px; "
+                onclick='addBallast();'>Add ↓</button>
+            <button type="button" class="mlbutton" style="position:absolute; top:475px; left:750px; "
+                onclick='addVirtualGroup();'>Add ↓</button>
         </div>
 
-
-        <div style="Width:90%;margin: auto;">
+        <div class='widePanel'>
             <div style="padding:5px;">
                 <div class="btn-group" role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-danger" onclick='removeSelected()'><span
@@ -273,7 +436,7 @@
                     alert('Select element first.')
                     return;
                 }
-                visualPageID = g_pages[g_selectedPageIndex].ID;
+                visualPageID = g_Pages[g_SelectedPageIndex].ID;
                 var tree_item = tree[selectedIndex];
                 XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
                 XHRString = XHRString.replace('arg1', 'visual_name=' + tree_item.name + '&');
@@ -283,10 +446,9 @@
                 XHRString = XHRString.replace('arg5', 'visual_ID_of_type=' + tree_item.id_of_type);
 
                 $.get(XHRString, function (data, status) {
-                    getVisuals(visualPageID);
+                    getVisuals();
                 });
             }
-
 
             var SelectedVisualIndex;
 
@@ -302,13 +464,12 @@
                 source.style.backgroundColor = g_SelectedColor;
             }
 
-
             function doSelectVisualItemByDataID() {
 
                 if (g_selectedVisualID) {
                     $('#render').find("div").each(function (index) {
-                    $(this).css("background-color", "black");
-                });
+                        $(this).css("background-color", "black");
+                    });
                     dv = $('*[data-ID="' + g_selectedVisualID + '"]');
                     dv.css("background-color", g_SelectedColor);
                 }
@@ -320,9 +481,8 @@
                 $.get("/DeleteVisual?ID=" + g_selectedVisualID.toString(), function (data, status) {
                     response = data;
                     if (data.localeCompare('http200') == 0) {
-                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                        getVisuals();
                     }
-
                 });
             }
 
@@ -332,7 +492,7 @@
                 $.get("/ResizeVisual?col_width=" + col_width.toString() + '&ID=' + g_selectedVisualID.toString(), function (data, status) {
                     response = data;
                     if (data.localeCompare('http200') == 0) {
-                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                        getVisuals();
                     }
                 });
             }
@@ -343,7 +503,7 @@
                 $.get("/MoveVisualUp?visual_id=" + g_selectedVisualID.toString(), function (data, status) {
                     response = data;
                     if (data.localeCompare('http200') == 0) {
-                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                        getVisuals();
                     }
                 });
             }
@@ -354,7 +514,7 @@
                 $.get("/MoveVisualDown?visual_id=" + g_selectedVisualID.toString(), function (data, status) {
                     response = data;
                     if (data.localeCompare('http200') == 0) {
-                        getVisuals(g_pages[g_selectedPageIndex].ID);
+                        getVisuals();
                     }
                 });
             }

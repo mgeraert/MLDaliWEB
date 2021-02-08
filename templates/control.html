@@ -57,6 +57,55 @@
         });
 
 
+        $.get("/getPage?page_id=" + pageID , function (data, status) {
+            page = JSON.parse(data);
+            page = page[0];
+            if (page.page_control_type == 0) {
+                $.get("/basicControl", function (data, status) {
+                    data = data.replace(/sr_style/g, 'text-align: center;' +
+                        'cursor: pointer;' +
+                        'padding:10px;' +
+                        'margin:2px;' +
+                        'opacity: 0.9;' +
+                        'border-style: solid;' +
+                        'filter: alpha(opacity=90);' +
+                        'font-size: 25px;' +
+                        'font-family:Verdana;' +
+                        'color: white;');
+                    $('#basicControl').html(data);
+                });
+            }
+            else if (page.page_control_type == 1) {
+                $.get("/screenControl", function (data, status) {
+                    data = data.replace(/sr_style/g, 'text-align: center;' +
+                        'cursor: pointer;' +
+                        'padding:10px;' +
+                        'margin:2px;' +
+                        'opacity: 0.9;' +
+                        'border-style: solid;' +
+                        'filter: alpha(opacity=90);' +
+                        'font-size: 25px;' +
+                        'font-family:Verdana;' +
+                        'color: white;');
+                    $('#basicControl').html(data);
+                });
+            }
+        });
+
+        $.get("/basicControl", function (data, status) {
+            data = data.replace(/sr_style/g, 'text-align: center;' +
+                'cursor: pointer;' +
+                'padding:10px;' +
+                'margin:2px;' +
+                'opacity: 0.9;' +
+                'border-style: solid;' +
+                'filter: alpha(opacity=90);' +
+                'font-size: 25px;' +
+                'color: white;');
+            $('#basicControl').html(data);
+        });
+
+
         function getVisualItem2(visual_name, visual_type, visual_columns, visual_ID_of_type, index) {
             if (visual_type !== 9) {
                 visualItem = "<div class='brick$visual_columns'" +
@@ -70,19 +119,9 @@
             return visualItem;
         }
 
-        $.get("/basicControl", function (data, status) {
-            data = data.replace(/sr_style/g, 'text-align: center;' +
-                'cursor: pointer;' +
-                'padding:10px;' +
-                'margin:2px;' +
-                'opacity: 0.9;' +
-                'border-style: solid;' +
-                'filter: alpha(opacity=90);' +
-                'font-size: 35px;' +
-                'color: white;');
-            $('#basicControl').html(data);
 
-        });
+
+
     });
 
     function doSelectVisualItem(index) {
@@ -122,7 +161,7 @@
         }
 
         else if (selectedBallast.ID) {
-            $.get("/doControlBallast?action=" + action + '&ballast_id=' + selectedBallast.ID, function (data, status) {});
+            $.get("/doControlBallast?action=" + action + '&ballast_id=' + selectedBallast.ID, function (data, status) { });
         }
     }
     function doSetArcLevel(arcLevel) {
@@ -134,7 +173,7 @@
         }
 
         else if (selectedBallast.ID) {
-            $.get("/doSetArcLevelBallast?arc_level=" + arcLevel + '&ballast_id=' + selectedBallast.ID, function (data, status) {});
+            $.get("/doSetArcLevelBallast?arc_level=" + arcLevel + '&ballast_id=' + selectedBallast.ID, function (data, status) { });
         }
     }
 
@@ -201,6 +240,11 @@
 
         scene = scenes[index];
         $.get("/gotoScene?scene_number=" + scene.scene_number + '&visual_id=' + selectedtedVisual.ID, function (data, status) {
+        });
+    }
+
+    function doSelectSceneNumber(sceneNumber) {
+        $.get("/gotoScene?scene_number=" + sceneNumber + '&visual_id=' + selectedtedVisual.ID, function (data, status) {
         });
     }
 

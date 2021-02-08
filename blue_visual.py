@@ -25,3 +25,4 @@ def resize_visual():
     c.execute(sql_string)
     db.conn.commit()
     return 'http200'
+

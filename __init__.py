@@ -40,15 +40,26 @@ def visuals():
 def various_info():
 
     current_os = platform.system()
-    out_string = 'Current OS: ' + current_os + '\r\n'
+    out_string = 'Current OS: ' + current_os + '<br>'
     current_os= current_os.lower()
 
     if current_os == 'windows':
-        out_string = out_string + 'Windows ini file path' + '\r\n'
-        out_string = out_string + os.getcwd() + os.path.sep + 'mlconfig.ini' + '\r\n'
+        out_string = out_string + 'Windows ini file path:' + '<br>'
+        ini_path = os.getcwd() + os.path.sep + 'mlconfig.ini'
+        out_string = out_string + ini_path + '<br>'
     else:
-        out_string = out_string + 'Linux ini file path' + '\r\n'
-        out_string = out_string + os.getcwd() + os.path.sep + 'mlconfig.ini' + '\r\n'
+        out_string = out_string + 'Linux ini file path:' + '<br>'
+        ini_path = '/var/www/webApp/webApp/mlconfig.ini'
+        out_string = out_string + os.getcwd() + ini_path + ' (Hard coded) <br>'
+
+    import configparser
+    config = configparser.ConfigParser()
+    config.read(ini_path)
+    db_f_name = config['DEFAULT']['db_f_name']
+    out_string = out_string + 'DBName: ' + db_f_name + '<br>'
+
+
+    return out_string
 
 @app.route("/channels")
 def channels():
@@ -89,6 +100,10 @@ def navbar():
 @app.route("/basicControl")
 def basic_control():
     return render_template('basiccontrol.html')
+
+@app.route("/screenControl")
+def screen_control():
+    return render_template('screencontrol.html')
 
 @app.route("/ballasts_get")
 def ballasts_get():

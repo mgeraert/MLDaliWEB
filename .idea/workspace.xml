@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/blue_groups.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/DaliChannels.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daliconfig.db" beforeDir="false" afterPath="$PROJECT_DIR$/daliconfig.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/bricks.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/bricks.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ballast_per_group.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ballast_per_group.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/control.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/control.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/virtual_groups.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/virtual_groups.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/visuals.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/visuals.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

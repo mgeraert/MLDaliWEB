@@ -53,6 +53,17 @@ def update_page():
     db.conn.commit()
     return 'http200'
 
+@pages.route("/DeletePage", methods=['GET'])
+def delete_page():
+    page_id = request.args.get('page_id')
+    db = Database()
+    c = db.conn.cursor()
+    sql_string = 'DELETE FROM pages WHERE ID=' + page_id
+    c.execute(sql_string)
+    db.conn.commit()
+    sql_string = 'DELETE FROM visual WHERE visual_page_ID=' + page_id
+    return 'http200'
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):

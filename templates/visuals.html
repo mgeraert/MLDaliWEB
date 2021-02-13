@@ -229,7 +229,7 @@
             visualPageID = g_Pages[g_SelectedPageIndex].ID;
             group = g_Groups[selectedIndex];
             XHRString = '/InsertVisual?arg1arg2arg3arg4arg5';
-            XHRString = XHRString.replace('arg1', 'visual_name=' + group.name + '&');
+            XHRString = XHRString.replace('arg1', 'visual_name=' + group.dali_group_name + '&');
             XHRString = XHRString.replace('arg2', 'visual_page_ID=' + visualPageID.toString() + '&');
             XHRString = XHRString.replace('arg3', 'visual_type=2&');
             XHRString = XHRString.replace('arg4', 'visual_columns=' + '12' + '&');
@@ -240,7 +240,7 @@
             });
         }
 
-        function addPage() {
+        function AddPage() {
 
             $.get("/InsertPage", function (data, status) {
                 if (data.localeCompare('http200') == 0) {
@@ -249,24 +249,31 @@
             });
         }
 
-        function savePage(){
-            page_id  = g_Pages[g_SelectedPageIndex].ID;
+        function DeletePage() {
+            page_id = g_Pages[g_SelectedPageIndex].ID;
+            $.get("/DeletePage?page_id=" + page_id.toString(), function (data, status) {
+                if (data.localeCompare('http200') == 0) {
+                    loadPages();
+                }
+            });
+        }
+
+        function SavePage() {
+            page_id = g_Pages[g_SelectedPageIndex].ID;
             page_name = $('#page_name').val();
             page_font_size = $('#page_font_size').val();
             page_button_height = $('#page_button_height').val();
 
-            argString = "?page_name=" + page_name + 
-                        "&page_font_size=" + page_font_size + 
-                        "&page_button_height=" + page_button_height +
-                        "&page_id=" + page_id.toString();
+            argString = "?page_name=" + page_name +
+                "&page_font_size=" + page_font_size +
+                "&page_button_height=" + page_button_height +
+                "&page_id=" + page_id.toString();
 
             $.get("/UpdatePage" + argString, function (data, status) {
                 if (data.localeCompare('http200') == 0) {
                     loadPages();
                 }
             });
-
-
         }
 
 
@@ -337,11 +344,11 @@
             <select id="pages" size="5" onClick="doSelectPage()"
                 style="position:absolute; top:58px; left:10px; width: 237px;height: 100px;"></select>
             <button type="button" class="mlbutton" style="position:absolute; top:175px; left:10px; width:80px;"
-                onclick='addPage();'>Add</button>
+                onclick='AddPage();'>Add</button>
             <button type="button" class="mlbutton" style="position:absolute; top:175px; left:100px; width:80px;"
-                onclick='removePage();'>Remove</button>
+                onclick='DeletePage();'>Remove</button>
             <button type="button" class="mlbutton" style="position:absolute; top:175px; left:500px; width:80px;"
-                onclick='savePage();'>Save</button>
+                onclick='SavePage();'>Save</button>
 
             <label for="page_name" style="position:absolute;top:58px;left:310px">Name</label>
             <input id="page_name" style="position:absolute; top:58px; left:360px; width:200px;"></input>

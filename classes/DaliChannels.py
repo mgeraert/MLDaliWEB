@@ -70,16 +70,10 @@ class DaliChannels(object):
         channel = self.get_chan(channel_number)
         channel.set_address_mode(address_mode)
 
-
     def set_direct_arc_enabled(self, direct_arc_enabled, channel_number):
         channel = self.get_chan(channel_number)
         channel.set_direct_arc_enabled(direct_arc_enabled)
 
-
-    def download_groups_from_ballast(self, ballast_id):
-        ballast = self.__db.get_ballast(ballast_id)
-        dc = DaliChannel(self.__channels[ballast.get('ballast_channel')])
-        dc.download_scene_from_ballast(ballast_id)
 
 
     def do_control(self, action, visualID):

@@ -7,42 +7,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>ML Groups</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ml_style1.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta name="mobile-web-app-capable" content="yes">
     <!-- Bootstrap -->
 
-
-
     <script>
+
+        var groups;
+
         $(document).ready(function () {
 
             $('#menu').load('/navbar', function () {
                 $('#menubar').find("li").each(function (index) {
                     $(this).removeClass("active");
                 });
-                $( "li:contains('Groups')" ).addClass("active");
+                $("li:contains('Groups')").addClass("active");
+            });
+
+            $.get("/channels_get", function (data, status) {
+                channels = JSON.parse(data);
+                $.each(channels, function (i, item) {
+                    $('#channels').append($('<option>', {
+                        value: item.ID,
+                        text: item.channel_name
+                    }));
+                });
+                $('#channels option')[0].selected = true;
+                GetGroups();
             });
 
 
-
-
-            $.get("/groups_get?channel=1", function (data, status) {
-                groups = JSON.parse(data);
-                for (var i = 0; i < groups.length; i++) {
-                    var group = groups[i];
-                    $("#groups").append(getGroupInputField(group.dali_group_number, group.ID, group.dali_group_name))
-                }
-            });
 
             function getGroupInputField(group_number, ID, group_name) {
 
                 var group = `
         <option id='grp$ID$'>$number$ $name$</option>
       `;
-
-
                 group = group.replace('$number$', group_number);
                 group = group.replace('$ID$', ID);
                 group = group.replace('$name$', group_name);
@@ -51,6 +54,19 @@
             }
         });
 
+        function GetGroups(){
+            selectedIndex = $('#channels').prop('selectedIndex');
+            argString = "?channel=" + (selectedIndex+1).toString();
+            $.get("/groups_get" + argString, function (data, status) {
+                groups = JSON.parse(data);
+                $.each(groups, function (i, item) {
+                    $('#groups').append($('<option>', {
+                        value: item.ID,
+                        text: item.dali_group_number + ' ' + item.dali_group_name
+                    }));
+                });
+            });
+        }
 
     </script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -61,60 +77,66 @@
 
 <body>
 
-
     <div id='menu'></div>
-
-
 
     <div class="container">
 
-        <div class="jumbotron">
-            <h2>Groups</h2>
-            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
+        <div class="widePanel" style="width:900px;height:180px;">
+            <div style="position:absolute;top:10px;left:10px;font-weight: bold;">Channels</div>
+            <div style="position:absolute;top:10px;left:500px;font-weight: bold;">Groups</div>
+            <select id='channels' size="5" style="position:absolute;top:60px;left:10px;width:300px;height: 100px;"
+                onclick="DoSelectGChannel()"></select>
+            <select id='groups' size="5" style="position:absolute;top:60px;left:500px;width:300px;height: 100px;"
+                onclick="DoSelectGroup()"></select>
         </div>
 
-        <div class="jumbotron  container-fluid">
-            <div class='col-xs-12 col-md-12 col-lg-5'>
-                <select class="form-control" size=20 style="width:100%;" id='ballastsOutside'></select>
-            </div>
-            <div class='col-xs-12 col-md-12 col-lg-2'>
-                <div style="padding:5px;">
-                    <div class="btn-group" role="group">
-                        <button type='button' id='off$ID$' class='btn btn-primary'
-                            onclick='RemoveFromGroup();'>Remove</button>
-                        <button type='button' id='off$ID$' class='btn btn-primary' onclick='AddToGroup();'>Add</button>
-                    </div>
+        <div class="widePanel" style="width:900px;height:500px;">
+
+            <div style="position:absolute;top:10px;left:10px;font-weight: bold;">Available</div>
+            <div style="position:absolute;top:10px;left:500px;font-weight: bold;">In group</div>
+
+            <select class="form-control" size=20 style="position:absolute;top:60px;left:10px;width:300px;height:400px"
+                id='ballastsOutside'></select>
+            <select class="form-control" size=20 style='position:absolute;top:60px;left:500px;width:300px;height:400px'
+                id='ballastsInside'></select>
+
+            <div style="padding:5px;">
+                <div class="btn-group" role="group">
+                    <button type='button' class='mlbutton' style="position:absolute;top:245px;left:340px;width:100px;"
+                        onclick='RemoveFromGroup();'>←Remove</button>
+                    <button type='button' class='mlbutton' style="position:absolute;top:200px;left:340px;width:100px;"
+                        onclick='AddToGroup();'>Add→</button>
                 </div>
             </div>
-            <div class='col-xs-12 col-md-12 col-lg-5'>
-                <select class="form-control" size=20 style='width:100%;' id='ballastsInside'></select>
-            </div>
+
         </div>
 
-        <div class="jumbotron">
+        <div class="widePanel" style="width:900px;height:180px;">
             <h2>Upload- Download</h2>
-            <div class="btn-group" role="group">
-                <button type='button' id='off$ID$' class='btn btn-primary' onclick='uploadToBallasts();'>Upload</button>
-                <button type='button' id='off$ID$' class='btn btn-primary'
-                    onclick='downloadFromBallasts();'>Download</button>
-            </div>
-            <div id='response'>Response</div>
+
+            <button type='button' class='mlbutton' style="position:absolute;top:73px;left:10px;width:100px;"
+                onclick='uploadToBallasts();'>Upload</button>
+            <button type='button' class='mlbutton' style="position:absolute;top:73px;left:120px;width:100px;"
+                onclick='downloadFromBallasts();'>Download</button>
+
+            <div id='response' style="position:absolute;top:20px;left:400px;width:100px;"></div>
         </div>
-
-
     </div>
 
     <script>
 
-
         var ballast_ids;
         var ballast_counter;
+        var ballasts_not_in;
+        var ballasts_in;
 
         $.get("/GetBallastIDsFromChannel?channel_number=1", function (data, status) {
             ballast_ids = JSON.parse(data);;
         });
 
-        function DoSelectGroup(index) {
+        function DoSelectGroup() {
+
+            index = $('#groups').prop('selectedIndex');
 
             function removeOptions(selectbox) {
                 var i;
@@ -127,19 +149,23 @@
             removeOptions(document.getElementById("ballastsOutside"));
 
             $.get("/GetBallastsFromGroup?channel_number=1&group_number=" + index.toString(), function (data, status) {
-                ballasts = JSON.parse(data);
-                for (var i = 0; i < ballasts.length; i++) {
-                    var ballast = ballasts[i];
-                    $("#ballastsInside").append(getBallastField(ballast.ballast_name, ballast.ID, ballast.ballast_short_address))
-                }
+                ballasts_in = JSON.parse(data);
+                $.each(ballasts_in, function (i, item) {
+                    $('#ballastsInside').append($('<option>', {
+                        value: item.ID,
+                        text: item.ballast_short_address + ' ' + item.ballast_name
+                    }));
+                });
             });
 
             $.get("/GetBallastsOutsideGroup?channel_number=1&group_number=" + index.toString(), function (data, status) {
-                ballasts = JSON.parse(data);
-                for (var i = 0; i < ballasts.length; i++) {
-                    var ballast = ballasts[i];
-                    $("#ballastsOutside").append(getBallastField(ballast.ballast_name, ballast.ID, ballast.ballast_short_address))
-                }
+                ballasts_not_in = JSON.parse(data);
+                $.each(ballasts_not_in, function (i, item) {
+                    $('#ballastsOutside').append($('<option>', {
+                        value: item.ID,
+                        text: item.ballast_short_address + ' ' + item.ballast_name
+                    }));
+                });
             });
         }
 
@@ -159,39 +185,36 @@
             });
         }
 
-
-        function getBallastField(ballast_name, ID, ballast_short_address) {
-
-            var bllst = `
-                    <option id=ID$ID$>$name$</option>
-            `;
-
-            bllst = bllst.replace('$ID$', ID);
-            bllst = bllst.replace('$name$', ballast_short_address + ' ' + ballast_name);
-
-            return bllst;
-        }
-
         function AddToGroup() {
-            list = document.getElementById("ballastsOutside");
-            ballast_index = list.selectedIndex;
-            GroupList = document.getElementById("groups");
-            group_index = GroupList.selectedIndex;
-            if (ballast_index > -1) {
-                opt = list[ballast_index];
-                idstr = opt.id;
-                id = idstr.substr(2, idstr.length);
-                $.post("/AddBallastToGroup", { group_number: group_index, ID: id })
-                    .done(DoSelectGroup(group_index));
 
+            selectedBallastIndex = $('#ballastsOutside').prop('selectedIndex');
+            ballast = ballasts_not_in[selectedBallastIndex];
+            selectedGroupIndex = $('#groups').prop('selectedIndex');
+            group = groups[selectedGroupIndex];
+            if (selectedBallastIndex > -1 && selectedGroupIndex > -1) {
+                argString = "?group_number=" + group.dali_group_number.toString() + "&ballast_id=" + ballast.ID.toString();
+                $.get("/AddBallastToGroup" + argString, function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        DoSelectGroup();
+                    }
+                });
             }
         }
 
         function RemoveFromGroup() {
-
+            selectedBallastIndex = $('#ballastsInside').prop('selectedIndex');
+            ballast = ballasts_in[selectedBallastIndex];
+            selectedGroupIndex = $('#groups').prop('selectedIndex');
+            group = groups[selectedGroupIndex];
+            if (selectedBallastIndex > -1 && selectedGroupIndex > -1) {
+                argString = "?group_number=" + group.dali_group_number.toString() + "&ballast_id=" + ballast.ID.toString();
+                $.get("/RemoveBallastFromGroup" + argString, function (data, status) {
+                    if (data.localeCompare("http200") == 0) {
+                        DoSelectGroup();
+                    }
+                });
+            }
         }
-
-
 
     </script>
 

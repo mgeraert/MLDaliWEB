@@ -7,22 +7,27 @@ import serial
 import json
 import platform
 import os
-import createdb
 from classes.DaliChannels import DaliChannels
 from classes.DaliChannel import AddressModes
 
 from blue_pages import pages
 from blue_visual import visual
 from blue_virtual_group import virtual_group
+from blue_groups import groups
 from blue_updater import updatr
 
 app = Flask(__name__)
 app.register_blueprint(pages)
 app.register_blueprint(visual)
 app.register_blueprint(virtual_group)
+app.register_blueprint(groups)
 app.register_blueprint(updatr)
 
 dcs = DaliChannels()
+
+db = Database()
+db.create_db()
+
 
 @app.route("/groups")
 def beneden():
@@ -191,22 +196,7 @@ def serial_ports_get():
     return out
 
 
-@app.route('/AddBallastToGroup', methods=['POST'])
-def add_ballast_to_group():
-    group_number = request.form.get('group_number')
-    ballast_id = request.form.get('ID')
-    db = Database()
-    answer = db.add_ballast_to_group(ballast_id, group_number)
-    return answer
 
-@app.route('/RemoveBallastFromGroup', methods=['POST'])
-def remove_ballast_from_group():
-    group_number = request.form.get('group_number')
-    ids = request.form.get('ID')
-    ids = ids[3:]
-    db = Database()
-    answer = db.remove_ballast_from_group(ids, group_number)
-    return answer
 
 @app.route('/GetBallastsFromGroup', methods=['GET'])
 def get_ballasts_from_group():
@@ -320,11 +310,7 @@ def get_ballastids_from_channel():
     return json.dumps(answer)
 
 
-@app.route('/downloadGroupsFromBallast', methods=['GET'])
-def download_groups_from_ballast():
-    ballast_id = request.args.get('ballast_id')
-    answer = dcs.download_groups_from_ballast(ballast_id)
-    return answer
+
 
 
 @app.route('/query', methods=['GET'])

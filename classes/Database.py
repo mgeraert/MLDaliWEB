@@ -20,11 +20,13 @@ class Database(object):
         if current_os.lower() == "windows":
             config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.conn = sqlite3.connect(os.getcwd() + os.path.sep + self.db_f_name)
+            self.db_full_f_name = os.getcwd() + os.path.sep + self.db_f_name
+            self.conn = sqlite3.connect(self.db_full_f_name)
         else:
             config.read('/var/www/webApp/webApp/mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.conn = sqlite3.connect('/var/www/webApp/webApp/' + self.db_f_name)
+            self.db_full_f_name = '/var/www/webApp/webApp/' + self.db_f_name
+            self.conn = sqlite3.connect(self.db_full_f_name)
 
     def create_table(self, table_name):
         c = self.conn.cursor()
@@ -88,11 +90,13 @@ class Database(object):
         return
 
     def get_channels(self):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT * FROM dalichannels'
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def get_ballasts(self, channelnr):
@@ -106,7 +110,11 @@ class Database(object):
 
     def get_ballast(self, ID):
         sql_string = 'SELECT * FROM ballasts WHERE ID=' + str(ID)
-        data = self.get_sql_data(sql_string)
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
+        c.execute(sql_string)
+        data = c.fetchall()
         return data[0]
 
     def get_group(self, group_id):
@@ -198,11 +206,13 @@ class Database(object):
         return data[0]
 
     def get_comport(self, channel_nr):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string2 = 'SELECT channel_com_port FROM dalichannels WHERE channel_nr=' + channel_nr.__str__()
         c.execute(sql_string2)
         data = c.fetchall()
+        conn.close()
         return data[0]
 
     def update_com_port(self, channel_id, port_name):
@@ -245,20 +255,7 @@ class Database(object):
         c.execute(sql_string)
         self.conn.commit()
 
-    def add_ballast_to_group(self, ballast_id, group_number):
-        c = self.conn.cursor()
-        sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + '=1 WHERE ID=' + str(ballast_id)
-        c.execute(sql_string)
-        self.conn.commit()
-        return 'http200'
 
-    def remove_ballast_from_group(self, id, group_number):
-        c = self.conn.cursor()
-        sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + \
-                     '=0 WHERE ID=' + str(id)
-        c.execute(sql_string)
-        self.conn.commit()
-        return 'http200'
 
     def get_ballasts_from_group(self, channel_number, group_number):
         self.conn.row_factory = dict_factory
@@ -330,6 +327,29 @@ class Database(object):
                 self.add_ballast_to_group(ballast_id, index)
             else:
                 self.remove_ballast_from_group(ballast_id, index)
+
+    def add_ballast_to_group(self, ballast_id, group_number):
+        db = Database()
+        c = db.conn.cursor()
+        sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + \
+                     '=1 WHERE ID=' + str(ballast_id)
+        c.execute(sql_string)
+        db.conn.commit()
+        return 'http200'
+        return answer
+
+    def remove_ballast_from_group(self, ballast_id, group_number):
+        db = Database()
+        c = db.conn.cursor()
+        sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + \
+                     '=0 WHERE ID=' + str(ballast_id)
+        c.execute(sql_string)
+        db.conn.commit()
+        return 'http200'
+
+
+
+
 
     def get_group_is_umbrella(self, group_id):
         c = self.conn.cursor()
@@ -486,3 +506,187 @@ class Database(object):
             self.execute(execute_string)
 
         return 'http200'
+
+
+    def create_db(self):
+        table_name = 'ballasts'
+        self.create_table(table_name)
+
+        columns = ["ballast_channel INTEGER",
+                   "ballast_name TEXT DEFAULT ''",
+                   "ballast_short_address INTEGER",
+                   "ballast_channel INTEGER DEFAULT 0",
+                   "ballast_group_0 INTEGER DEFAULT 0",
+                   "ballast_group_1 INTEGER DEFAULT 0",
+                   "ballast_group_2 INTEGER DEFAULT 0",
+                   "ballast_group_3 INTEGER DEFAULT 0",
+                   "ballast_group_4 INTEGER DEFAULT 0",
+                   "ballast_group_5 INTEGER DEFAULT 0",
+                   "ballast_group_6 INTEGER DEFAULT 0",
+                   "ballast_group_7 INTEGER DEFAULT 0",
+                   "ballast_group_8 INTEGER DEFAULT 0",
+                   "ballast_group_9 INTEGER DEFAULT 0",
+                   "ballast_group_10 INTEGER DEFAULT 0",
+                   "ballast_group_11 INTEGER DEFAULT 0",
+                   "ballast_group_12 INTEGER DEFAULT 0",
+                   "ballast_group_13 INTEGER DEFAULT 0",
+                   "ballast_group_14 INTEGER DEFAULT 0",
+                   "ballast_group_15 INTEGER DEFAULT 0",
+                   "ballast_scene0_value INTEGER DEFAULT 255",
+                   "ballast_scene1_value INTEGER DEFAULT 255",
+                   "ballast_scene2_value INTEGER DEFAULT 255",
+                   "ballast_scene3_value INTEGER DEFAULT 255",
+                   "ballast_scene4_value INTEGER DEFAULT 255",
+                   "ballast_scene5_value INTEGER DEFAULT 255",
+                   "ballast_scene6_value INTEGER DEFAULT 255",
+                   "ballast_scene7_value INTEGER DEFAULT 255",
+                   "ballast_scene8_value INTEGER DEFAULT 255",
+                   "ballast_scene9_value INTEGER DEFAULT 255",
+                   "ballast_scene10_value INTEGER DEFAULT 255",
+                   "ballast_scene11_value INTEGER DEFAULT 255",
+                   "ballast_scene12_value INTEGER DEFAULT 255",
+                   "ballast_scene13_value INTEGER DEFAULT 255",
+                   "ballast_scene14_value INTEGER DEFAULT 255",
+                   "ballast_scene15_value INTEGER DEFAULT 255"]
+
+        self.insert_columns(table_name, columns)
+
+        table_name = 'sites'
+
+        self.create_table(table_name)
+        columns = ["site_nr_of_chans INTEGER",
+                   "site_occupied INTEGER"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+        table_name = 'dali_groups'
+
+        self.create_table(table_name)
+        columns = ["dali_group_name TEXT DEFAULT ''",
+                   "dali_group_number INTEGER",
+                   "dali_group_channel INTEGER",
+                   "dali_group_visible INTEGER DEFAULT 1",
+                   "dali_group_order INTEGER DEFAULT 1",
+                   "dali_group_is_umbrella INTEGER DEFAULT 0"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'scenes'
+
+        self.create_table(table_name)
+        columns = ["scene_group_id number INTEGER",
+                   "scene_name TEXT DEFAULT ''",
+                   "scene_number INTEGER",
+                   "scene_value INTEGER DEFAULT 255",
+                   "scene_sort_order INTEGER"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'visual'
+
+        self.create_table(table_name)
+        columns = ["visual_name TEXT DEFAULT ''",
+                   "visual_sort_order INTEGER DEFAULT 0",
+                   "visual_type INTEGER",
+                   "visual_ID_of_type INTEGER DEFAULT 0",
+                   "visual_page_ID INTEGER DEFAULT 0",
+                   "visual_columns INTEGER DEFAULT 1"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'pages'
+
+        self.create_table(table_name)
+        columns = ["page_name TEXT DEFAULT ''",
+                   "page_control_type INTEGER DEFAULT 0",
+                   "page_font_size INTEGER DEFAULT 15",
+                   "page_button_height INTEGER DEFAULT 30",
+                   "page_sort_order INTEGER DEFAULT 0"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'virtual_group'
+
+        self.create_table(table_name)
+        columns = ["name TEXT DEFAULT ''"]
+
+        # ********************************************************
+
+        table_name = 'virtual_group_items'
+
+        self.create_table(table_name)
+        columns = ["ballast_id INTEGER DEFAULT ''",
+                   "virtual_group_ID INTEGER"]
+        self.insert_columns(table_name, columns)
+        # ********************************************************
+
+        table_name = 'dali_action'
+
+        self.create_table(table_name)
+        columns = ["dali_action_is_ballast INTEGER",
+                   "dali_action_is_group INTEGER",
+                   "dali_action_is_broadcast INTEGER",
+                   "dali_action_is_command INTEGER DEFAULT 1",
+                   "dali_action_command INTEGER DEFAULT 1",
+                   "dali_action_arc_level INTEGER DEFAULT 1"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'dali_event'
+
+        self.create_table(table_name)
+        columns = ["dali_event_name INTEGER",
+                   "dali_event_is_fixed_time INTEGER",
+                   "dali_event_is_change INTEGER",
+                   "dali_event_hour INTEGER",
+                   "dali_event_minute INTEGER",
+                   "dali_event_on_sun_rise INTEGER",
+                   "dali_event_on_sun_set INTEGER",
+                   "dali_event_on_leaving INTEGER",
+                   "dali_event_on_entering INTEGER",
+                   "dali_event_on_waking INTEGER",
+                   "dali_event_on_left INTEGER",
+                   "dali_event_on_sleep INTEGER",
+                   "dali_event_valid_on_monday INTEGER",
+                   "dali_event_valid_on_tuesday INTEGER",
+                   "dali_event_valid_on_wednesday INTEGER",
+                   "dali_event_valid_on_thursday INTEGER",
+                   "dali_event_valid_on_friday INTEGER",
+                   "dali_event_valid_on_saturday INTEGER",
+                   "dali_event_valid_on_sunday INTEGER",
+                   "dali_event_valid_on_occupied INTEGER",
+                   "dali_event_valid_on_empty INTEGER",
+                   "dali_event_valid_on_sleep INTEGER",
+                   "dali_event_valid_on_leaving INTEGER",
+                   "dali_event_valid_on_going_to_sleep INTEGER",
+                   "dali_event_valid_on_light INTEGER",
+                   "dali_event_valid_on_dark INTEGER"]
+
+        self.insert_columns(table_name, columns)
+
+        # ********************************************************
+
+        table_name = 'dalichannels'
+        self.create_table(table_name)
+        columns = ["channel_nr INTEGER",
+                   "channel_name TEXT DEFAULT ''",
+                   "channel_com_port TEXT DEFAULT ''"]
+
+        self.insert_columns(table_name, columns)
+
+        data = self.select('SELECT * FROM sites')
+        if len(data) == 0:
+            self.execute('INSERT INTO sites (site_nr_of_chans, site_occupied) VALUES (1,1);')
+
+        self.insert_ballasts()

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  translate="no">
 
 <head>
+    <meta name="google" content="notranslate">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,6 +61,26 @@
         $.get("/getPage?page_id=" + pageID , function (data, status) {
             page = JSON.parse(data);
             page = page[0];
+            pageButtonHeight = page.page_button_height.toString() + 'px';
+            pageFontSizeHeader = page.page_font_size;
+            pageFontSizeSmaller = Math.round(page.page_font_size *.5);
+            pageFontSizeHeaderString = pageFontSizeHeader.toString() + 'px';
+            pageFontSizeSmallerString = pageFontSizeSmaller.toString() + 'px';
+
+            $('.brick12').css('height', pageButtonHeight);
+            $('.brick6').css('height', pageButtonHeight);
+            $('.brick4').css('height', pageButtonHeight);
+            $('.brick3').css('height', pageButtonHeight);
+            $('.brick2').css('height', pageButtonHeight);
+            $('.brick1').css('height', pageButtonHeight);
+
+            $('.brick12').css('font-size', pageFontSizeHeaderString);
+            $('.brick6').css('font-size', pageFontSizeSmallerString);
+            $('.brick4').css('font-size', pageFontSizeSmallerString);
+            $('.brick3').css('font-size', pageFontSizeSmallerString);
+            $('.brick2').css('font-size', pageFontSizeSmallerString);
+            $('.brick1').css('font-size', pageFontSizeSmallerString);
+
             if (page.page_control_type == 0) {
                 $.get("/basicControl", function (data, status) {
                     data = data.replace(/sr_style/g, 'text-align: center;' +
@@ -105,7 +126,6 @@
             $('#basicControl').html(data);
         });
 
-
         function getVisualItem2(visual_name, visual_type, visual_columns, visual_ID_of_type, index) {
             if (visual_type !== 9) {
                 visualItem = "<div class='brick$visual_columns'" +
@@ -118,10 +138,6 @@
 
             return visualItem;
         }
-
-
-
-
     });
 
     function doSelectVisualItem(index) {
@@ -260,7 +276,7 @@
 
 <body background="static/bg/11.jpg">
     <div style="Width:90%;margin: auto;">
-        <div id='render' style="display: block;overflow: auto;"></div>
+        <div id='render' style="display: block;overflow: auto;position:relative;"></div>
     </div>
 
     <div id='basicControl'></div>

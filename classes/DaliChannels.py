@@ -7,18 +7,24 @@ class DaliChannels(object):
 
     __channels = []
     __db = Database()
+    __port_error = 0
 
     def __init__(self):
         channels = self.__db.get_channels()
         for channel in channels:
             dc = DaliChannel(channel.get('channel_nr'))
-            self. __channels.append(dc)
+            if dc.get_port_error == 1:
+                __port_error = 1
 
+            self. __channels.append(dc)
 
     def get_chan(self, channel_number):
         for channel in self.__channels:
             if channel.get_channel_number() == channel_number:
                 return channel
+
+    def get_port_error(self):
+        return self.__port_error
 
 
     def get_chan_via_ballast_id(self, ballast_id):

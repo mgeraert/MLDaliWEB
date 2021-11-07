@@ -7,6 +7,7 @@ import serial
 import json
 import platform
 import os
+#import Barrel
 from classes.DaliChannels import DaliChannels
 from classes.DaliChannel import AddressModes
 
@@ -28,6 +29,10 @@ dcs = DaliChannels()
 db = Database()
 db.create_db()
 
+#InfiniteTmr = Barrel.InfiniteTimer(.5, Barrel.tick)
+
+
+
 
 @app.route("/groups")
 def beneden():
@@ -40,6 +45,20 @@ def ballasts():
 @app.route("/visuals")
 def visuals():
     return render_template('visuals.html')
+
+@app.route("/database")
+def database():
+    return render_template('database.html')
+
+@app.route("/database_name_get")
+def database_name_get():
+    return db.get_base_name()
+
+@app.route('/database_name_set', methods=['GET'])
+def database_name_set():
+    database_name = request.args.get('database_name')
+    return db.set_name(database_name)
+
 
 @app.route("/various_info")
 def various_info():
@@ -62,7 +81,6 @@ def various_info():
     config.read(ini_path)
     db_f_name = config['DEFAULT']['db_f_name']
     out_string = out_string + 'DBName: ' + db_f_name + '<br>'
-
 
     return out_string
 
@@ -431,6 +449,17 @@ def goto_scene():
     return 'http200'
 
     return json.dumps(data)
+
+#@app.route("/barrelStart")
+#def barrel_start():
+#    InfiniteTmr.start()
+#    return 'http200'
+
+#@app.route("/barrelStop")
+#def barrel_stop():
+#    InfiniteTmr.cancel()
+#    return 'http200'
+
 
 if __name__ == '__main__':
     #app.run(debug=True, use_reloader=False)

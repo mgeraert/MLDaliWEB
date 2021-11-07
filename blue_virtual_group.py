@@ -1,18 +1,20 @@
 from flask import Blueprint, request, render_template
 from classes.Database import Database
 import json
+import sqlite3
 
 virtual_group = Blueprint('virtual_group', __name__)
 
 @virtual_group.route("/getVirtualGroups")
 def get_virtual_groups():
-
     db = Database()
-    db.conn.row_factory = dict_factory
-    c = db.conn.cursor()
+    conn = sqlite3.connect(db.db_full_f_name)
+    conn.row_factory = dict_factory
+    c = conn.cursor()
     sql_string = 'SELECT * FROM virtual_group ORDER BY name ASC'
     c.execute(sql_string)
     data = c.fetchall()
+    conn.close()
     return json.dumps(data)
 
 @virtual_group.route('/InsertVirtualGroup', methods=['GET'])

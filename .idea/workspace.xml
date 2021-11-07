@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Barrel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue_updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_updater.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue_virtual_group.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_virtual_group.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/DaliChannel.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/DaliChannels.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/daliconfig.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mlconfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/mlconfig.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/ballasts.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ballasts.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,14 +35,12 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -99,6 +108,7 @@
       <item itemvalue="Python.flask" />
     </list>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -125,66 +135,42 @@
     <option name="LAST_COMMIT_MESSAGE" value="Serial port problem solved" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1340" y="421" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1612340897507">
+    <state width="1845" height="459" key="GridCell.Tab.0.bottom" timestamp="1636212083257">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1340" y="421" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1612340897507" />
-    <state x="2197" y="515" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1608638116346">
+    <state width="1845" height="459" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
+    <state width="1845" height="459" key="GridCell.Tab.0.center" timestamp="1636212083257">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="2197" y="515" key="#com.intellij.fileTypes.FileTypeChooser/0.0.3440.1400@0.0.3440.1400" timestamp="1608638116346" />
-    <state x="2104" y="307" key="CommitChangelistDialog2" timestamp="1607276818413">
+    <state width="1845" height="459" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
+    <state width="1845" height="459" key="GridCell.Tab.0.left" timestamp="1636212083257">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="2104" y="307" key="CommitChangelistDialog2/0.0.3440.1400@0.0.3440.1400" timestamp="1607276818413" />
-    <state width="719" height="466" key="DebuggerActiveHint" timestamp="1613222056042">
+    <state width="1845" height="459" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
+    <state width="1845" height="459" key="GridCell.Tab.0.right" timestamp="1636212083257">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="719" height="466" key="DebuggerActiveHint/0.0.3440.1400@0.0.3440.1400" timestamp="1613222056042" />
-    <state x="1692" y="142" width="1503" height="939" key="DiffContextDialog" timestamp="1612292834360">
+    <state width="1845" height="459" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
+    <state width="1845" height="336" key="GridCell.Tab.1.bottom" timestamp="1636211927758">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state x="1692" y="142" width="1503" height="939" key="DiffContextDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1612292834360" />
-    <state width="1715" height="363" key="GridCell.Tab.0.bottom" timestamp="1613227779477">
+    <state width="1845" height="336" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
+    <state width="1845" height="336" key="GridCell.Tab.1.center" timestamp="1636211927758">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1715" height="363" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1613227779477" />
-    <state width="1715" height="363" key="GridCell.Tab.0.center" timestamp="1613227779477">
+    <state width="1845" height="336" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
+    <state width="1845" height="336" key="GridCell.Tab.1.left" timestamp="1636211927758">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1715" height="363" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1613227779477" />
-    <state width="1715" height="363" key="GridCell.Tab.0.left" timestamp="1613227779477">
+    <state width="1845" height="336" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
+    <state width="1845" height="336" key="GridCell.Tab.1.right" timestamp="1636211927758">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1715" height="363" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1613227779477" />
-    <state width="1715" height="363" key="GridCell.Tab.0.right" timestamp="1613227779477">
+    <state width="1845" height="336" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
+    <state x="2238" y="515" key="com.intellij.ide.util.TipDialog" timestamp="1636299946461">
       <screen x="0" y="0" width="3440" height="1400" />
     </state>
-    <state width="1715" height="363" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1613227779477" />
-    <state width="1715" height="336" key="GridCell.Tab.1.bottom" timestamp="1613224809399">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1715" height="336" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1613224809399" />
-    <state width="1715" height="336" key="GridCell.Tab.1.center" timestamp="1613224809399">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1715" height="336" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1613224809399" />
-    <state width="1715" height="336" key="GridCell.Tab.1.left" timestamp="1613224809399">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1715" height="336" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1613224809399" />
-    <state width="1715" height="336" key="GridCell.Tab.1.right" timestamp="1613224809399">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1715" height="336" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1613224809399" />
-    <state x="1397" y="409" key="SettingsEditor" timestamp="1612363118225">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state x="1397" y="409" key="SettingsEditor/0.0.3440.1400@0.0.3440.1400" timestamp="1612363118225" />
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog" timestamp="1613143700330">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state x="1416" y="524" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1613143700330" />
+    <state x="2238" y="515" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1636299946461" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -196,8 +182,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classes/Database.py</url>
-          <line>192</line>
-          <option name="timeStamp" value="177" />
+          <line>83</line>
+          <option name="timeStamp" value="182" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

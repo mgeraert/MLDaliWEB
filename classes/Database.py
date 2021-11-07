@@ -20,24 +20,27 @@ class Database(object):
         if current_os.lower() == "windows":
             config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_full_f_name = os.getcwd() + os.path.sep + self.db_f_name
-            self.conn = sqlite3.connect(self.db_full_f_name)
+            self.db_dir_name = os.getcwd() + '/'
         else:
             config.read('/var/www/webApp/webApp/mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_full_f_name = '/var/www/webApp/webApp/' + self.db_f_name
-            self.conn = sqlite3.connect(self.db_full_f_name)
+            self.db_dir_name = '/var/www/webApp/webApp/'
+        self.db_full_f_name = self.db_dir_name + self.db_f_name + '.db'
+
 
     def create_table(self, table_name):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string1 = 'CREATE TABLE IF NOT EXISTS ' \
                       + table_name \
                       + '(ID INTEGER PRIMARY KEY);'
         c.execute(sql_string1)
+        conn.close()
         return
 
     def insert_columns(self, table_name, columns):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         for column in columns:
             sql_string = 'ALTER TABLE ' + table_name + '  ADD COLUMN ' + column + ';'
             try:
@@ -45,28 +48,60 @@ class Database(object):
             except sqlite3.Error as e:
                 if not 'duplicate column name:' in e.args[0]:
                     print(e.args[0])
+        conn.close()
 
     def select(self, sql_string):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
+    def get_base_name(self):
+        splitted = self.db_f_name.split('.')
+        return splitted[0]
+
+    def get_name(self):
+        return self.db_f_name
+
+    def set_name(self, new_name):
+        import configparser
+        config = configparser.ConfigParser()
+        current_os = platform.system().lower()
+
+        if current_os.lower() == "windows":
+            config_f_name = os.getcwd() + os.path.sep + 'mlconfig.ini'
+        else:
+            config_f_name = '/var/www/webApp/webApp/mlconfig.ini'
+
+        config.read(config_f_name)
+        config['DEFAULT']['db_f_name'] = new_name
+        with open(config_f_name, 'w') as configfile:
+            config.write(configfile)
+        dbname = self.db_dir_name + self.db_f_name
+        new_dbname = self.db_dir_name + new_name
+        os.rename(dbname + '.db', new_dbname + '.db')
+        return 'http200'
+
     def execute(self, sql_string):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         c.execute(sql_string)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
         return
 
     def insert_ballasts(self):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT site_nr_of_chans FROM sites'
         c.execute(sql_string)
         nr_of_chans = c.fetchone()
         nr_of_chans = nr_of_chans["site_nr_of_chans"]
 
-        self.conn.row_factory = ""
+        conn.row_factory = ""
 
         for channel_nr in range(0, nr_of_chans):
             for ballast_nr in range(1, 65):
@@ -77,7 +112,7 @@ class Database(object):
                     sql_string = 'INSERT INTO ballasts (ballast_channel, ballast_short_address)  VALUES (' + \
                                  str(channel_nr + 1) + ',' + str(ballast_nr) + ')'
                     c.execute(sql_string)
-                    self.conn.commit()
+                    onn.commit()
             for group_nr in range(0, 16):
                 sql_string = 'SELECT ID FROM dali_groups WHERE dali_group_number =' + \
                              str(group_nr) + ' AND dali_group_channel=' + str(channel_nr + 1)
@@ -86,7 +121,8 @@ class Database(object):
                     sql_string = 'INSERT INTO dali_groups (dali_group_channel, dali_group_number)  VALUES (' + \
                                  str(channel_nr + 1) + ',' + str(group_nr) + ')'
                     c.execute(sql_string)
-                    self.conn.commit()
+                    conn.commit()
+        conn.close()
         return
 
     def get_channels(self):
@@ -100,21 +136,24 @@ class Database(object):
         return data
 
     def get_ballasts(self, channelnr):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string2 = 'SELECT * FROM ballasts WHERE ballast_channel=' + str(channelnr) + \
                       ' ORDER BY ballast_short_address ASC'
         c.execute(sql_string2)
         data = c.fetchall()
+        conn.close()
         return data
 
-    def get_ballast(self, ID):
-        sql_string = 'SELECT * FROM ballasts WHERE ID=' + str(ID)
+    def get_ballast(self, i_d):
         conn = sqlite3.connect(self.db_full_f_name)
         conn.row_factory = dict_factory
         c = conn.cursor()
+        sql_string = 'SELECT * FROM ballasts WHERE ID=' + str(i_d)
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close
         return data[0]
 
     def get_group(self, group_id):
@@ -123,39 +162,48 @@ class Database(object):
         return data[0]
 
     def get_groups(self, channelnr):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT * FROM dali_groups WHERE dali_group_channel=' + str(channelnr) + \
                      ' ORDER BY dali_group_number ASC'
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close
         return data
 
     def get_group_number(self, group_id):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT dali_group_number FROM dali_groups WHERE ID=' + str(group_id)
         c.execute(sql_string)
         data = c.fetchone()
+        conn.close
         return data[0]
 
     def get_ballast_number(self, ballast_id):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT ballast_short_address FROM ballasts WHERE ID=' + str(ballast_id)
         c.execute(sql_string)
         data = c.fetchone()
+        conn.close
         return data[0]
 
     def get_ballast_id_from_channel(self, channel_number):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT ID  FROM ballasts WHERE ballast_channel=' + str(channel_number)
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close
         return data
 
     def get_tree(self):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT * FROM dalichannels'
         c.execute(sql_string)
         data_channels = c.fetchall()
@@ -195,14 +243,17 @@ class Database(object):
                     {'name': row_ballast.get('ballast_name'), 'type': 2, 'id_of_type': row_ballast.get('ID')})
 
             data_groups = c.fetchall()
+        conn.close
         return tree_list
 
     def get_ballast_id_and_channel(self, ID):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string2 = 'SELECT ballast_short_address, ballast_channel FROM ballasts WHERE ID=' + str(ID)
         c.execute(sql_string2)
         data = c.fetchall()
+        conn.close()
         return data[0]
 
     def get_comport(self, channel_nr):
@@ -216,59 +267,68 @@ class Database(object):
         return data[0]
 
     def update_com_port(self, channel_id, port_name):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string2 = 'UPDATE dalichannels SET  channel_com_port="' + port_name + \
                       '" WHERE ID=' + str(channel_id)
         c.execute(sql_string2)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
         return 'http200'
 
     def update_ballast_name(self, ballast_id, ballast_name):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string2 = 'UPDATE ballasts SET  ballast_name=\'' + ballast_name + \
                       '\' WHERE ID=' + str(ballast_id)
         c.execute(sql_string2)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
 
     def update_group_name(self, group_id, group_name):
-
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE dali_groups SET dali_group_name=\'' + group_name + \
                      '\' WHERE ID=' + str(group_id)
         c.execute(sql_string)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
 
     def update_group_is_umbrella(self, group_id, dali_group_is_umbrella):
-
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE dali_groups SET dali_group_is_umbrella=' + str(dali_group_is_umbrella) + \
                      ' WHERE ID=' + str(group_id)
         c.execute(sql_string)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
         return (dali_group_is_umbrella)
 
     def update_group_name(self, group_id, group_name):
-
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE dali_groups SET dali_group_name=\'' + group_name + \
                      '\' WHERE ID=' + str(group_id)
         c.execute(sql_string)
-        self.conn.commit()
-
+        conn.commit()
+        conn.close()
 
 
     def get_ballasts_from_group(self, channel_number, group_number):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT ID, ballast_short_address, ballast_name FROM ballasts WHERE ballast_channel=' + \
                      channel_number + ' AND ballast_group_' + group_number + "=1"
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def get_ballasts_from_groupID(self, group_ID):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = "SELECT dali_group_number, dali_group_channel FROM dali_groups WHERE ID=" + str(group_ID)
         c.execute(sql_string)
         data = c.fetchall()
@@ -279,23 +339,28 @@ class Database(object):
                      str(dali_group_channel) + ' AND ballast_group_' + str(dali_group_number) + "=1"
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def get_ballasts_outside_group(self, channel_number, group_number):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT ID, ballast_short_address, ballast_name FROM ballasts WHERE ballast_channel=' + \
                      channel_number + ' AND ballast_group_' + group_number + "=0"
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def get_ballast_is_in_group(self, ballast_id, group_number):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT ballast_group_' + str(group_number) + ' FROM ballasts WHERE ID=' + str(ballast_id)
         c.execute(sql_string)
         data = c.fetchone()
         data = data[0]
+        conn.close()
         return data
 
     def set_dali_groups_0_7(self, ballast_id, byte_data):
@@ -329,39 +394,39 @@ class Database(object):
                 self.remove_ballast_from_group(ballast_id, index)
 
     def add_ballast_to_group(self, ballast_id, group_number):
-        db = Database()
-        c = db.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + \
                      '=1 WHERE ID=' + str(ballast_id)
         c.execute(sql_string)
-        db.conn.commit()
+        conn.commit()
+        conn.close()
         return 'http200'
         return answer
 
     def remove_ballast_from_group(self, ballast_id, group_number):
-        db = Database()
-        c = db.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE ballasts SET ballast_group_' + str(group_number) + \
                      '=0 WHERE ID=' + str(ballast_id)
         c.execute(sql_string)
-        db.conn.commit()
+        conn.commit()
+        conn.close()
         return 'http200'
 
-
-
-
-
     def get_group_is_umbrella(self, group_id):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT dali_group_is_umbrella FROM dali_groups WHERE ID = ' + str(group_id)
         c.execute(sql_string)
         data = c.fetchone()
+        conn.close()
         return data['dali_group_is_umbrella']
 
     def get_scenes_from_group(self, group_id):
-
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string_select = 'SELECT * FROM scenes WHERE scene_group_id = ' + str(group_id)
         c.execute(sql_string_select)
         data = c.fetchall()
@@ -380,16 +445,17 @@ class Database(object):
                 sql_string = sql_string.replace('$sceneNr', str(index + scene_offset))
                 sql_string = sql_string.replace('$sceneOrder', str(index))
                 c.execute(sql_string)
-                self.conn.commit()
+                conn.commit()
 
             c.execute(sql_string_select)
             data = c.fetchall()
-
+        conn.close()
         return data
 
     def get_scene_values_for_group(self, group_id, scene_number):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT dali_group_number FROM dali_groups WHERE ID=' + str(group_id)
         c.execute(sql_string)
         data = c.fetchone()
@@ -399,35 +465,43 @@ class Database(object):
         sql_string = sql_string.replace('$ballastGroup', 'ballast_group_' + str(dali_group_number))
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def get_pages(self):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         sql_string = 'SELECT * FROM pages ORDER BY page_sort_order ASC'
         c.execute(sql_string)
         data = c.fetchall()
+        conn.close()
         return data
 
     def update_scene_name(self, scene_id, scene_name):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string2 = 'UPDATE scenes SET scene_name=\'' + scene_name + \
                       '\' WHERE ID=' + str(scene_id)
         c.execute(sql_string2)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
         return 'http200'
 
     def update_scene_value(self, ballast_id, scene_number, scene_value):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'UPDATE ballasts SET $daliscenelevel=' + str(scene_value) + \
                      ' WHERE ID=' + str(ballast_id)
         sql_string = sql_string.replace('$daliscenelevel', 'ballast_scene' + str(scene_number) + '_value')
         c.execute(sql_string)
-        self.conn.commit()
+        conn.commit()
+        conn.close()
         return 'http200'
 
     def insert_visual(self, visual_name, visual_page_ID, visual_type, visual_columns, visual_ID_of_type):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT visual_sort_order FROM visual WHERE visual_page_ID= ' + str(
             visual_page_ID) + ' ORDER BY visual_sort_order DESC LIMIT 1'
         c.execute(sql_string)
@@ -446,7 +520,7 @@ class Database(object):
                      str(visual_ID_of_type) + ", " + \
                      str(sort_order + 1) + ")"
         c.execute(sql_string)
-        self.conn.commit()
+        conn.commit()
         return 'http200'
 
     def get_visual(self, visual_page_ID):
@@ -459,13 +533,15 @@ class Database(object):
         return data[0]
 
     def get_sql_data(self, sql_string):
-        self.conn.row_factory = dict_factory
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
         c.execute(sql_string)
         return c.fetchall()
 
     def move_visual_down(self, visual_id):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT visual_sort_order FROM visual WHERE ID=' + str(visual_id)
         c.execute(sql_string)
         data = c.fetchone()
@@ -481,10 +557,12 @@ class Database(object):
             self.execute(execute_string)
             execute_string = "UPDATE visual SET visual_sort_order =" + str(sort_order_2) + " WHERE ID=" + str(visual_id)
             self.execute(execute_string)
+        conn.close()
         return 'http200'
 
     def move_visual_up(self, visual_id):
-        c = self.conn.cursor()
+        conn = sqlite3.connect(self.db_full_f_name)
+        c = conn.cursor()
         sql_string = 'SELECT visual_sort_order, visual_page_ID FROM visual WHERE ID=' + str(visual_id)
         c.execute(sql_string)
         data = c.fetchone()
@@ -504,7 +582,7 @@ class Database(object):
             execute_string = "UPDATE visual SET visual_sort_order =" + str(sort_order_2) + " WHERE ID=" \
                              + str(visual_id)
             self.execute(execute_string)
-
+        conn.close()
         return 'http200'
 
 

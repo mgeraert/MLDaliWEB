@@ -119,6 +119,17 @@ class DaliChannel(object):
         self.__direct_arc_enabled = 0
         self.send_over_dali(self.get_address(), 8)
 
+
+    def dali_set_fade_time(self, fade_time):
+        self.__direct_arc_enabled = 0
+        self.dali_set_dtr(fade_time)
+        self.send_over_dali_double(self.get_address(), 46)
+
+    def dali_set_fade_rate(self, fade_rate):
+        self.__direct_arc_enabled = 0
+        self.dali_set_dtr(fade_rate)
+        self.send_over_dali_double(self.get_address(), 47)
+
     def dali_goto_scene(self, scene_number):
         self.__direct_arc_enabled = 0
 

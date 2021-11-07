@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from git import Repo
+from git import repo
 
 updatr = Blueprint('updater', __name__)
 

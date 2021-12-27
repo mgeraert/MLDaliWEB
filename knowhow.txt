@@ -1,0 +1,28 @@
+build a container
+
+docker build -t 25dec21v4 .
+
+Vor raspberry pi:
+docker buildx build --platform linux/arm64 -t 26dec21v1 .
+
+run a container
+
+docker run -p 5000:5000 25dec21v3
+
+package to tar:
+
+ docker save -o C:\Users\marcg\25decv3.tar 25dec21v3
+
+ Met de Pi GUI copy de tar naar \tmp
+die eerst rwx gemaakt is met:
+sudo chmod -R 777 .
+
+
+ga naar \tmp
+
+docker load -i 25decv3.tar
+
+docker run --platform linux/amd64 -p 5000:5000 25dec21v3
+
+
+

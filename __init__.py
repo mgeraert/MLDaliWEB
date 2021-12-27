@@ -255,7 +255,7 @@ def do_set_arc_level():
 @app.route("/doSetArcLevelBallast", methods=['GET'])
 def do_set_arc_level_ballast():
     arc_level = int(request.args.get('arc_level'))
-    ballast_id = int(request.args.get('ballast_id'))
+    ballast_id = int(request.args.get('ballast_i\d'))
     answer = dcs.do_set_arc_level_ballast(arc_level, ballast_id)
     return answer
 
@@ -463,4 +463,5 @@ def goto_scene():
 
 if __name__ == '__main__':
     #app.run(debug=True, use_reloader=False)
-    app.run(host="0.0.0.0", port="5000")
+    app.run(debug=True, host="0.0.0.0", port=5000)
+

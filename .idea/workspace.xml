@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="3a3cd01b-1ba0-4784-9296-1a3c95b43d20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Barrel.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/knowhow.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/MLWeb.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/MLWeb.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue_updater.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_updater.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue_virtual_group.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_virtual_group.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/DaliChannel.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/DaliChannels.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/DaliChannels.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/blue_pages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/Database.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/Database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/daliconfig.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mlconfig.ini" beforeDir="false" afterPath="$PROJECT_DIR$/mlconfig.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/ballasts.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/ballasts.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +25,7 @@
       <list>
         <option value="HTML File" />
         <option value="Python Script" />
+        <option value="Setup Script" />
       </list>
     </option>
   </component>
@@ -94,7 +95,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\marcg\PycharmProjects\flasktest\__init__.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/__init__.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -127,50 +128,20 @@
       <option name="project" value="LOCAL" />
       <updated>1607276818732</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Commit 07NOV2021">
+      <created>1636300640301</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1636300640301</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Serial port problem solved" />
-    <option name="LAST_COMMIT_MESSAGE" value="Serial port problem solved" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state width="1845" height="459" key="GridCell.Tab.0.bottom" timestamp="1636212083257">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="459" key="GridCell.Tab.0.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
-    <state width="1845" height="459" key="GridCell.Tab.0.center" timestamp="1636212083257">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="459" key="GridCell.Tab.0.center/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
-    <state width="1845" height="459" key="GridCell.Tab.0.left" timestamp="1636212083257">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="459" key="GridCell.Tab.0.left/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
-    <state width="1845" height="459" key="GridCell.Tab.0.right" timestamp="1636212083257">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="459" key="GridCell.Tab.0.right/0.0.3440.1400@0.0.3440.1400" timestamp="1636212083257" />
-    <state width="1845" height="336" key="GridCell.Tab.1.bottom" timestamp="1636211927758">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="336" key="GridCell.Tab.1.bottom/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
-    <state width="1845" height="336" key="GridCell.Tab.1.center" timestamp="1636211927758">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="336" key="GridCell.Tab.1.center/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
-    <state width="1845" height="336" key="GridCell.Tab.1.left" timestamp="1636211927758">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="336" key="GridCell.Tab.1.left/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
-    <state width="1845" height="336" key="GridCell.Tab.1.right" timestamp="1636211927758">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state width="1845" height="336" key="GridCell.Tab.1.right/0.0.3440.1400@0.0.3440.1400" timestamp="1636211927758" />
-    <state x="2238" y="515" key="com.intellij.ide.util.TipDialog" timestamp="1636299946461">
-      <screen x="0" y="0" width="3440" height="1400" />
-    </state>
-    <state x="2238" y="515" key="com.intellij.ide.util.TipDialog/0.0.3440.1400@0.0.3440.1400" timestamp="1636299946461" />
+    <MESSAGE value="Commit 07NOV2021" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit 07NOV2021" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -182,8 +153,38 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/classes/Database.py</url>
-          <line>83</line>
+          <line>85</line>
           <option name="timeStamp" value="182" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="186" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/DaliChannel.py</url>
+          <line>106</line>
+          <option name="timeStamp" value="187" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/__init__.py</url>
+          <line>193</line>
+          <option name="timeStamp" value="188" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/Database.py</url>
+          <line>147</line>
+          <option name="timeStamp" value="191" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/classes/Database.py</url>
+          <line>140</line>
+          <option name="timeStamp" value="192" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/blue_pages.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="193" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

@@ -7,15 +7,8 @@ pages = Blueprint('pages', __name__)
 
 @pages.route("/getPages")
 def get_pages():
-
     db = Database()
-    db.conn.row_factory = dict_factory
-    c = db.conn.cursor()
-    sql_string = 'SELECT * FROM Pages ORDER BY page_sort_order ASC'
-    c.execute(sql_string)
-    data = c.fetchall()
-    return json.dumps(data)
-
+    return json.dumps(db.get_pages())
 
 @pages.route("/getPage", methods=['GET'])
 def get_page():

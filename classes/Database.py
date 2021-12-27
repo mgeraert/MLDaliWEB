@@ -20,11 +20,12 @@ class Database(object):
         if current_os.lower() == "windows":
             config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_dir_name = os.getcwd() + '/'
+            self.db_dir_name = os.getcwd() + os.path.sep
         else:
-            config.read('/var/www/webApp/webApp/mlconfig.ini')
+            #config.read('/var/www/webApp/webApp/mlconfig.ini')
+            config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
             self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_dir_name = '/var/www/webApp/webApp/'
+            self.db_dir_name = os.getcwd() + os.path.sep
         self.db_full_f_name = self.db_dir_name + self.db_f_name + '.db'
 
 
@@ -73,7 +74,8 @@ class Database(object):
         if current_os.lower() == "windows":
             config_f_name = os.getcwd() + os.path.sep + 'mlconfig.ini'
         else:
-            config_f_name = '/var/www/webApp/webApp/mlconfig.ini'
+            #config_f_name = '/var/www/webApp/webApp/mlconfig.ini'
+            config_f_name = os.getcwd() + os.path.sep + 'mlconfig.ini'
 
         config.read(config_f_name)
         config['DEFAULT']['db_f_name'] = new_name
@@ -112,7 +114,7 @@ class Database(object):
                     sql_string = 'INSERT INTO ballasts (ballast_channel, ballast_short_address)  VALUES (' + \
                                  str(channel_nr + 1) + ',' + str(ballast_nr) + ')'
                     c.execute(sql_string)
-                    onn.commit()
+                    conn.commit()
             for group_nr in range(0, 16):
                 sql_string = 'SELECT ID FROM dali_groups WHERE dali_group_number =' + \
                              str(group_nr) + ' AND dali_group_channel=' + str(channel_nr + 1)
@@ -130,6 +132,16 @@ class Database(object):
         conn.row_factory = dict_factory
         c = conn.cursor()
         sql_string = 'SELECT * FROM dalichannels'
+        c.execute(sql_string)
+        data = c.fetchall()
+        conn.close()
+        return data
+
+    def get_pages(self):
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
+        sql_string = 'SELECT * FROM Pages ORDER BY page_sort_order ASC'
         c.execute(sql_string)
         data = c.fetchall()
         conn.close()

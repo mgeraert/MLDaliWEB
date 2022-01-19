@@ -8,6 +8,10 @@ import json
 import platform
 import os
 #import Barrel
+
+db = Database()
+db.create_db()
+
 from classes.DaliChannels import DaliChannels
 from classes.DaliChannel import AddressModes
 
@@ -26,13 +30,9 @@ app.register_blueprint(updatr)
 
 dcs = DaliChannels()
 
-db = Database()
-db.create_db()
+
 
 #InfiniteTmr = Barrel.InfiniteTimer(.5, Barrel.tick)
-
-
-
 
 @app.route("/groups")
 def beneden():
@@ -59,6 +59,17 @@ def database_name_set():
     database_name = request.args.get('database_name')
     return db.set_name(database_name)
 
+@app.route('/datafile_choose', methods=['GET'])
+def database_file():
+    database_name = request.args.get('database_file')
+    return db.set_name(database_name)
+
+@app.route('/db_create', methods=['GET'])
+def database_create():
+    database_name = request.args.get('database_file')
+    db.set_name(database_name)
+    db.create_db()
+    return 'http200'
 
 @app.route("/various_info")
 def various_info():
@@ -170,7 +181,6 @@ def update_ballast():
     db.update_ballast_name(ballast_id, ballast_name)
     return ballast_name
 
-
 @app.route('/UpdateGroupName', methods=['POST'])
 def update_group():
     group_name = request.form.get('group_name')
@@ -178,7 +188,6 @@ def update_group():
     db = Database()
     db.update_group_name(group_id, group_name)
     return group_name
-
 
 @app.route('/UpdateGroupIsUmbrella', methods=['POST'])
 def update_group_is_umbrella():
@@ -212,9 +221,6 @@ def serial_ports_get():
     for p in ports:
         out = out + p.description
     return out
-
-
-
 
 @app.route('/GetBallastsFromGroup', methods=['GET'])
 def get_ballasts_from_group():
@@ -326,10 +332,6 @@ def get_ballastids_from_channel():
     db = Database()
     answer = db.get_ballast_id_from_channel(channel_number)
     return json.dumps(answer)
-
-
-
-
 
 @app.route('/query', methods=['GET'])
 def query():

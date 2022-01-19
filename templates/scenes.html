@@ -73,6 +73,15 @@
 
     <div class="container">
 
+                <div class="jumbotron">
+            <h2>Groups</h2>
+            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
+            <div class="btn-group" role="group">
+                <button type='button' class='btn btn-primary' onclick='GroupOn();'>On</button>
+                <button type='button' class='btn btn-primary' onclick='GroupOff();'>Off</button>
+            </div>
+        </div>
+
         <div class="jumbotron">
             <h2>Groups</h2>
             <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>

@@ -18,16 +18,15 @@ class Database(object):
         current_os = platform.system().lower()
 
         if current_os.lower() == "windows":
-            config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
-            self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_dir_name = os.getcwd() + os.path.sep
+            db_path = os.getcwd() + os.path.sep + '..' + os.path.sep + 'database' + os.path.sep
         else:
             #config.read('/var/www/webApp/webApp/mlconfig.ini')
-            config.read(os.getcwd() + os.path.sep + 'mlconfig.ini')
-            self.db_f_name = config['DEFAULT']['db_f_name']
-            self.db_dir_name = os.getcwd() + os.path.sep
-        self.db_full_f_name = self.db_dir_name + self.db_f_name + '.db'
+            db_path = '/etc/MLDali'
 
+        config.read(db_path + 'mlconfig.ini')
+        self.db_f_name = config['DEFAULT']['db_f_name']
+        self.db_dir_name = db_path
+        self.db_full_f_name = self.db_dir_name + self.db_f_name + '.db'
 
     def create_table(self, table_name):
         conn = sqlite3.connect(self.db_full_f_name)
@@ -71,11 +70,7 @@ class Database(object):
         config = configparser.ConfigParser()
         current_os = platform.system().lower()
 
-        if current_os.lower() == "windows":
-            config_f_name = os.getcwd() + os.path.sep + 'mlconfig.ini'
-        else:
-            #config_f_name = '/var/www/webApp/webApp/mlconfig.ini'
-            config_f_name = os.getcwd() + os.path.sep + 'mlconfig.ini'
+        config_f_name = self.db_dir_name + 'mlconfig.ini'
 
         config.read(config_f_name)
         config['DEFAULT']['db_f_name'] = new_name

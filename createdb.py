@@ -103,7 +103,7 @@ columns = ["page_name TEXT DEFAULT ''",
             "page_button_height INTEGER DEFAULT 30",
             "page_sort_order INTEGER DEFAULT 0"]
 
-db.insert_columns( table_name, columns)
+db.insert_columns(table_name, columns)
 
 # ********************************************************
 

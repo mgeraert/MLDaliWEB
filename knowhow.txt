@@ -1,3 +1,8 @@
+Fixed IP:
+sudo nano /etc/dhcpcd.conf
+
+**********************
+
 build a container
 
 docker build -t 25dec21v4 .
@@ -15,7 +20,7 @@ package to tar:
 
  Met de Pi GUI copy de tar naar \tmp
 die eerst rwx gemaakt is met:
-sudo chmod -R 777 .
+sudo chmod -R 777 .mkdir
 
 
 ga naar \tmp
@@ -24,9 +29,24 @@ docker load -i 25decv3.tar
 
 docker run --platform linux/amd64 -p 5000:5000 25dec21v3
 
-Python program in
-
+Python program in:
 /usr/share/pyshared/MLDaliWEB
+
+MLDali config in:
+/etc/MLDali
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo mkdir /etc/MLDali
+sudo mkdir /usr/share/pyshared/MLDaliWEB
+cd /usr/share/pyshared/MLDaliWEB
+sudo git clone https://github.com/mgeraert/MLDaliWEB.git
+sudo chmod -R a+rwx /etc/MLDali
+sudo chmod -R a+rwx /usr/share/pyshared/MLDaliWEB
+
+Geef toegang voor iedereen op de MLDali dir:
+
+sudo chmod -R a+rwx /etc/MLDali
 
 Copy files from stick to config dir bvb
 sudo cp /media/pi/LaCie/Windmolen.db /etc/MLDali/Windmolen.db
@@ -35,11 +55,11 @@ sudo cp /media/pi/LaCie/mlconfig.ini /etc/MLDali/mlconfig.ini
 Add to raspberry pi boot:
 
 1.  sudo nano /etc/rc.local
-2.  sudo python /usr/share/pyshared/__init__.py &
+2.  insert: cd  /usr/share/pyshared/MLDaliWEB/
+3.  and: sudo python /usr/share/pyshared/MLDaliWEB/__init__.py &
 
 
 
 
-MLDali config in
-/etc/MLDali
+
 

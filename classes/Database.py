@@ -21,12 +21,13 @@ class Database(object):
             db_path = os.getcwd() + os.path.sep + '..' + os.path.sep + 'database' + os.path.sep
         else:
             #config.read('/var/www/webApp/webApp/mlconfig.ini')
-            db_path = '/etc/MLDali'
+            db_path = '/etc/MLDali/'
 
         config.read(db_path + 'mlconfig.ini')
         self.db_f_name = config['DEFAULT']['db_f_name']
         self.db_dir_name = db_path
         self.db_full_f_name = self.db_dir_name + self.db_f_name + '.db'
+        self.conn = sqlite3.connect(self.db_full_f_name)
 
     def create_table(self, table_name):
         conn = sqlite3.connect(self.db_full_f_name)
@@ -37,6 +38,10 @@ class Database(object):
         c.execute(sql_string1)
         conn.close()
         return
+
+    def conn(self):
+        return self.conn
+
 
     def insert_columns(self, table_name, columns):
         conn = sqlite3.connect(self.db_full_f_name)

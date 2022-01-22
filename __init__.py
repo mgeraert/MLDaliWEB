@@ -84,7 +84,7 @@ def various_info():
         out_string = out_string + ini_path + '<br>'
     else:
         out_string = out_string + 'Linux ini file path:' + '<br>'
-        ini_path = '/var/www/webApp/webApp/mlconfig.ini'
+        ini_path = '/etc/MLDali/mlconfig.ini'
         out_string = out_string + os.getcwd() + ini_path + ' (Hard coded) <br>'
 
     import configparser

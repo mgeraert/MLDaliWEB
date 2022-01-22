@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Database</title>
+
+    <!-- Bootstrap -->
+
+    <style>
+
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ml_style1.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#menu').load('/navbar', function () {
+                $('#menubar').find("li").each(function (index) {
+                    $(this).removeClass("active");
+                });
+                $("li:contains('Database')").addClass("active");
+            });
+
+            getDBName();
+        });
+
+        function getDBName() { }
+        $.get("/database_name_get", function (data, status) {
+            $("#databasename").val(data);
+        });
+
+        function SaveName() {
+
+            database_name = $("#databasename").val();
+            argString = "?database_name=" + database_name;
+            $.get("/database_name_set" + argString, function (data, status) {
+                if (data.localeCompare("http200") == 0) {
+                    alert("Database name succesfully changed");
+                }
+            });
+        }
+
+        function ChooseDB() {
+
+            database_name = GetFileSizeNameAndType();
+            argString = "?database_file=" + database_name;
+            $.get("/datafile_choose" + argString, function (data, status) {
+                if (data.localeCompare("http200") == 0) {
+                    alert("Database succesfully changed");
+                }
+            });
+        }
+
+
+        function CreateDB() {
+            database_name = $("#newdatabasename").val();
+            argString = "?database_file=" + database_name;
+            $.get("/db_create" + argString, function (data, status) {
+                if (data.localeCompare("http200") == 0) {
+                    alert("Database succesfully created");
+                }
+            });
+        }
+
+
+
+    </script>
+
+</head>
+
+<body>
+    <div id='menu'></div>
+    <div class="widePanel" style="height:80px">
+        <label for="databasename" style="position:absolute;top:20px;left:20px;">Database name</label>
+        <input id="databasename" style="position:absolute;top:20px;left:180px;"></input>
+        <button id="submit" onclick="SaveName();" style="position:absolute;top:20px;left:450px;">Save</button>
+    </div>
+
+
+    <div class="widePanel" style="height:80px">
+        <input type="file" id="myfile" name="myfile" accept=".db">
+        <button id="submit" onclick="ChooseDB();" style="position:absolute;top:20px;left:450px;">Choose</button>
+    </div>
+
+    <div class="widePanel" style="height:80px">
+        <label for="databasename" style="position:absolute;top:20px;left:20px;">New database name</label>
+        <input id="newdatabasename" style="position:absolute;top:20px;left:180px;"></input>
+        <button id="submit" onclick="CreateDB();" style="position:absolute;top:20px;left:450px;">Create</button>
+    </div>
+
+
+</body>
+
+</html>

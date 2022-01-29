@@ -39,10 +39,12 @@ sudo apt-get update
 sudo apt-get upgrade
 sudo mkdir /etc/MLDali
 sudo mkdir /usr/share/pyshared/MLDaliWEB
-cd /usr/share/pyshared/MLDaliWEB
+cd /usr/share/pyshared/
+sudo rm -r /usr/share/pyshared/MLDaliWEB
 sudo git clone https://github.com/mgeraert/MLDaliWEB.git
 sudo chmod -R a+rwx /etc/MLDali
-sudo chmod -R a+rwx /usr/share/pyshared/MLDaliWEB
+lk
+sudo nano /etc/MLDali/mlconfig.ini
 
 Geef toegang voor iedereen op de MLDali dir:
 

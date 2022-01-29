@@ -31,7 +31,8 @@ class DaliChannel(object):
         ser.bytesize = serial.EIGHTBITS
         ser.timeout = .3
         try:
-            ser.open()
+            if not(ser.isOpen()):
+                ser.open()
 
         except:
             __port_error = 1
@@ -230,6 +231,33 @@ class DaliChannel(object):
                + str(scene_number) \
                + ' level: '\
                + str(scene_value)
+
+
+    def DaliAddToGroup(self, ballast_short_address, group_address):
+        self.__address_mode = AddressModes.ballast
+        self.__ballast_or_group_address = ballast_short_address
+        self.send_over_dali_double(self.get_address(), 96 + group_address)
+
+    def DaliRemoveFromGroup(self, ballast_short_address, group_address):
+        self.__address_mode = AddressModes.ballast
+        self.__ballast_or_group_address = ballast_short_address
+        self.send_over_dali_double(self.get_address(), 112 + group_address)
+
+
+    def UploadGroupsToDevice(self, ballast_sa):
+        db = Database()
+        ballast_data = db.get_ballast_by_short_address(ballast_sa)
+        self.__address_mode = AddressModes.ballast
+        sa = ballast_data['ballast_short_address']
+        self.__ballast_or_group_address = sa
+
+        for i in range(14):
+            if ballast_data['ballast_group_' + str(i)]:
+                self.DaliAddToGroup(sa, i)
+            else:
+                self.DaliRemoveFromGroup(sa, i)
+
+        return 'Ballast ' + str(sa) + ': groups uploaded'
 
 
     def do_command(self, command):

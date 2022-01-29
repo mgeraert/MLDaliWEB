@@ -18,7 +18,9 @@ def add_ballast_to_group():
     c.execute(sql_string)
     db.conn.commit()
     return 'http200'
-    return answer
+
+
+
 
 @groups.route('/RemoveBallastFromGroup', methods=['GET'])
 def remove_ballast_from_group():

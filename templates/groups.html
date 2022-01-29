@@ -36,6 +36,10 @@
       border: 1px solid rgba(86, 61, 124, .2);
     }
 
+    .group_div {
+      padding: 3px;
+    }
+
     hr {
       margin-top: 40px;
       margin-bottom: 40px;
@@ -49,7 +53,7 @@
         $('#menubar').find("li").each(function (index) {
           $(this).removeClass("active");
         });
-        $("li:contains('Group names')").addClass("active");
+        $("li:contains('Groups')").addClass("active");
       });
 
       $("#aan").click(function () {
@@ -76,9 +80,9 @@
 
         var group = `
           <div class='group_div'>
-            <div style='width:30px;'>$number$</div>
+            <div style='width:30px;float:left;'>$number$</div>
             <input class='groupInputField' id='grp$ID$' onchange='GroupNameChangeHandler(this.value, this.id)' value=$name$></input>
-            <input type="checkbox" class="form-check-input"  ID='$chck$ID$'  onchange='GroupUmbrellaChangeHandler(this.checked, this.id)' $checked$>Contains other groups</input><br>
+            <input type="checkbox" class="form-check-input"  ID='$chck$ID$'  onchange='GroupUmbrellaChangeHandler(this.checked, this.id)' $checked$> Contains other groups</input><br>
           </div>
           `;
 
@@ -86,11 +90,11 @@
         group = group.replace('$ID$', ID);
         group = group.replace('$ID$', ID);
         group = group.replace('$name$', group_name);
-        if (is_umbrella){
+        if (is_umbrella) {
           group = group.replace('$checked$', 'checked');
 
         }
-        else{
+        else {
           group = group.replace('$checked$', '');
         }
 
@@ -122,12 +126,10 @@
 
     function GroupUmbrellaChangeHandler(value, group_id) {
       group_id = group_id.substr(5, group_id.length);
-      if(value)
-      {
+      if (value) {
         value = 1;
       }
-      else
-      {
+      else {
         value = 0;
       }
       $.post("/UpdateGroupIsUmbrella", { dali_group_is_umbrella: value, ID: group_id });

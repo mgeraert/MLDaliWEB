@@ -17,6 +17,7 @@
     <script>
 
         var groups;
+        var selectedChannel;
 
         $(document).ready(function () {
 
@@ -24,7 +25,7 @@
                 $('#menubar').find("li").each(function (index) {
                     $(this).removeClass("active");
                 });
-                $("li:contains('Groups')").addClass("active");
+                $("li:focus").addClass("active");
             });
 
             $.get("/channels_get", function (data, status) {
@@ -36,6 +37,7 @@
                     }));
                 });
                 $('#channels option')[0].selected = true;
+                selectedChannel = channels[0];
                 GetGroups();
             });
 
@@ -43,9 +45,7 @@
 
             function getGroupInputField(group_number, ID, group_name) {
 
-                var group = `
-        <option id='grp$ID$'>$number$ $name$</option>
-      `;
+                var group = `<option id='grp$ID$'>$number$ $name$</option>`;
                 group = group.replace('$number$', group_number);
                 group = group.replace('$ID$', ID);
                 group = group.replace('$name$', group_name);
@@ -108,7 +108,6 @@
                         onclick='AddToGroup();'>Add→</button>
                 </div>
             </div>
-
         </div>
 
         <div class="widePanel" style="width:900px;height:180px;">
@@ -119,7 +118,7 @@
             <button type='button' class='mlbutton' style="position:absolute;top:73px;left:120px;width:100px;"
                 onclick='downloadFromBallasts();'>Download</button>
 
-            <div id='response' style="position:absolute;top:20px;left:400px;width:100px;"></div>
+            <div id='response' style="position:absolute;top:120px;left:20px;width:500px;">...</div>
         </div>
     </div>
 
@@ -213,6 +212,19 @@
                         DoSelectGroup();
                     }
                 });
+            }
+        }
+
+        function uploadToBallasts(){
+            selectedChannelID = selectedChannel.ID;
+            argStringChan = "?channel_ID=" + selectedChannelID.toString();
+            for (let i=0;i<1;i++){
+                argString = argStringChan + '&ballast_sa=' + i.toString()
+                $.get("/UploadGroupsToDevice" + argString, function (data, status) {
+                    if (data) {
+                        $("#response").text(data);
+                    }
+                });  
             }
         }
 

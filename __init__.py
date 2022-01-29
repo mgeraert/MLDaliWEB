@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from classes.Database import Database
 import sys
 import glob
+import serial.tools
 import serial.tools.list_ports as port_list
 import serial
 import json
@@ -435,6 +436,13 @@ def insert_visual():
     db.insert_visual(visual_name, visual_page_id, visual_type, visual_columns, visual_id_of_type)
     return 'http200'
 
+@app.route("/UploadGroupsToDevice")
+def upload_groups_to_device():
+
+    channel_ID = int(request.args.get('channel_ID'))
+    ballast_sa = int(request.args.get('ballast_sa'))
+    chan = dcs.get_chan(channel_ID)
+    return(chan.UploadGroupsToDevice(ballast_sa))
 
 @app.route("/getVisual")
 def get_visual():
@@ -465,5 +473,5 @@ def goto_scene():
 
 if __name__ == '__main__':
     #app.run(debug=True, use_reloader=False)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, use_reloader=False, host="0.0.0.0", port=5000)
 

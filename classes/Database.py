@@ -106,7 +106,7 @@ class Database(object):
         conn.row_factory = ""
 
         for channel_nr in range(0, nr_of_chans):
-            for ballast_nr in range(1, 65):
+            for ballast_nr in range(0, 64):
                 sql_string = 'SELECT ID FROM ballasts WHERE ballast_short_address =' + \
                              str(ballast_nr) + ' AND ballast_channel=' + str(channel_nr + 1)
                 c.execute(sql_string)
@@ -167,6 +167,17 @@ class Database(object):
         data = c.fetchall()
         conn.close
         return data[0]
+
+    def get_ballast_by_short_address(self, sa):
+        conn = sqlite3.connect(self.db_full_f_name)
+        conn.row_factory = dict_factory
+        c = conn.cursor()
+        sql_string = 'SELECT * FROM ballasts WHERE ballast_short_address=' + str(sa)
+        c.execute(sql_string)
+        data = c.fetchall()
+        conn.close
+        return data[0]
+
 
     def get_group(self, group_id):
         sql_string = 'SELECT * FROM dali_groups WHERE ID =' + str(group_id)
@@ -708,6 +719,7 @@ class Database(object):
 
         self.create_table(table_name)
         columns = ["name TEXT DEFAULT ''"]
+        self.insert_columns(table_name, columns)
 
         # ********************************************************
 

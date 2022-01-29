@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Scenes</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ml_style1.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -16,11 +16,12 @@
 
 
     <script>
-
+        var channelsFromDB;
         var groupsFromDB;
         var scenesFromDB;
         var ballastFromDB
-        var selectedGroupIndex;
+        var selectedChannel;
+        var selectedGroup;
         var selectedScene;
 
         $(document).ready(function () {
@@ -32,22 +33,24 @@
                 $("li:contains('Scenes')").addClass("active");
             });
 
-            $.get("/groups_get?channel=1", function (data, status) {
-                groupsFromDB = JSON.parse(data);
-                for (var i = 0; i < groupsFromDB.length; i++) {
-                    var group = groupsFromDB[i];
-                    $("#groups").append(getGroupInputField(group.dali_group_number, group.ID, group.dali_group_name))
-                }
-                DoSelectGroup(1);
+            $.get("/channels_get", function (data, status) {
+                channelsFromDB = JSON.parse(data);
+                $.each(channelsFromDB, function (i, item) {
+                    $('#channels').append($('<option>', {
+                        value: item.ID,
+                        text: item.channel_name
+                    }));
+                });
+                $('#channels option')[0].selected = true;
+                selectedChannel = channelsFromDB[0];
+                GetGroups();
             });
+
+
 
             function getGroupInputField(group_number, ID, group_name) {
 
-                var group = `
-        <option id='grp$ID$'>$number$ $name$</option>
-      `;
-
-
+                var group = `<option id='grp$ID$'>$number$ $name$</option>`;
                 group = group.replace('$number$', group_number);
                 group = group.replace('$ID$', ID);
                 group = group.replace('$name$', group_name);
@@ -55,6 +58,40 @@
                 return group;
             }
         });
+
+
+        function GetGroups(){
+            selectedIndex = $('#channels').prop('selectedIndex');
+            chanIndex = channelsFromDB[selectedIndex].ID;
+            argString = "?channel=" + (selectedIndex+1).toString();
+            $.get("/groups_get" + argString, function (data, status) {
+                groupsFromDB = JSON.parse(data);
+                $.each(groupsFromDB, function (i, item) {
+                    $('#groups').append($('<option>', {
+                        value: item.ID,
+                        text: item.dali_group_number + ' ' + item.dali_group_name
+                    }));
+                });
+                $('#groups option')[0].selected = true;
+                selectedGroup = groupsFromDB[0];
+            });
+
+        }
+
+
+        function DoSelectChannel() {
+            selectedIndex = $('#channels').prop('selectedIndex');
+            selectedChannel = channelsFromDB(selectedIndex);
+
+            $.get("/groups_get?channel=" & channel_id, function (data, status) {
+                groupsFromDB = JSON.parse(data);
+                for (var i = 0; i < groupsFromDB.length; i++) {
+                    var group = groupsFromDB[i];
+                    $("#groups").append(getGroupInputField(group.dali_group_number, group.ID, group.dali_group_name))
+                }
+                DoSelectGroup();
+            });
+        }
 
 
     </script>
@@ -66,57 +103,34 @@
 
 <body>
 
-
     <div id='menu'></div>
-
-
 
     <div class="container">
 
-                <div class="jumbotron">
-            <h2>Groups</h2>
-            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
-            <div class="btn-group" role="group">
-                <button type='button' class='btn btn-primary' onclick='GroupOn();'>On</button>
-                <button type='button' class='btn btn-primary' onclick='GroupOff();'>Off</button>
-            </div>
+        <div class="widePanel" style="width:900px;height:180px;">
+            <div style="position:absolute;top:10px;left:10px;font-weight: bold;">Channels</div>
+            <div style="position:absolute;top:10px;left:500px;font-weight: bold;">Groups</div>
+            <select id='channels' size="5" style="position:absolute;top:60px;left:10px;width:300px;height: 100px;"
+                onclick="DoSelectChannel()"></select>
+            <select id='groups' size="5" style="position:absolute;top:60px;left:500px;width:300px;height: 100px;"
+                onclick="DoSelectGroup()"></select>
         </div>
 
-        <div class="jumbotron">
-            <h2>Groups</h2>
-            <select id='groups' style='width:250px;' onchange="DoSelectGroup(this.selectedIndex)"></select>
-            <div class="btn-group" role="group">
-                <button type='button' class='btn btn-primary' onclick='GroupOn();'>On</button>
-                <button type='button' class='btn btn-primary' onclick='GroupOff();'>Off</button>
-            </div>
-        </div>
-
-        <div class="jumbotron  container-fluid">
+        <div class="widePanel" style="width:900px;height:320px;">
             <h3>Scenes</h3>
             <div class='col-xs-12 col-md-12 col-lg-5'>
                 <div id='scenes'></div>
             </div>
         </div>
 
-        <div class="jumbotron  container-fluid">
+        <div class="widePanel" style="width:900px;overflow: auto;">
             <h3>Ballasts</h3>
             <div class='col-xs-12 col-md-12 col-lg-5'>
                 <div id='ballasts'></div>
             </div>
         </div>
 
-        <div class="jumbotron">
-            <h2>Upload- Download</h2>
-            <div class="btn-group" role="group">
-                <button type='button' id='off$ID$' class='btn btn-primary' onclick='uploadToBallasts();'>Upload</button>
-                <button type='button' id='off$ID$' class='btn btn-primary'
-                    onclick='downloadFromBallasts();'>Download</button>
-            </div>
-            <div id='response'>Response</div>
-        </div>
     </div>
-
-
 
     <script>
 
@@ -125,8 +139,9 @@
         var scene_counter;
         var all_ballasts;
 
-        function DoSelectGroup(index) {
-            selectedGroupIndex = index;
+        function DoSelectGroup() {
+            index = $('#groups').prop('selectedIndex');
+            selectedGroup = groupsFromDB[index];
             $("#ballasts").empty();
             $("#scenes").empty();
             $.get("/getScenesFromGroup?group_id=" + groupsFromDB[index].ID, function (data, status) {
@@ -140,10 +155,11 @@
                 }
             });
 
-            $.get("/SetAddressMode?address_mode=2", function (data, status) {
-            });
-            $.get("/SetBallastOrGroupAddress?ballast_or_group_address=" + groupsFromDB[selectedGroupIndex].dali_group_number, function (data, status) {
-            });
+            $.get("/SetAddressMode?address_mode=2&channel_number=" + 
+            selectedChannel.ID.toString(), function (data, status) {});
+
+            $.get("/SetBallastOrGroupAddress?ballast_or_group_address=" + groupsFromDB[index].dali_group_number + 
+                        "&channel_number=" + selectedChannel.ID.toString(), function (data, status) {});
 
 
         }
@@ -170,7 +186,7 @@
         function gotoScene(sceneNumber) {
             $("#ballasts").empty();
             selectedScene = sceneNumber.substr(2, sceneNumber.length);
-            group_id = groupsFromDB[selectedGroupIndex].ID;
+            group_id = selectedGroup.ID;
             $.get("/getSceneValuesForGroup?group_id=" + group_id + '&scene_number=' + selectedScene, function (data, status) {
                 ballastFromDB = JSON.parse(data);
                 for (i = 0; i < ballastFromDB.length; i++) {
@@ -191,7 +207,6 @@
                         document.getElementById(checkBoxID).checked = false;
                     }
                 }
-
             });
         }
 
@@ -250,7 +265,6 @@
                     document.getElementById("sl" + index).disabled = false;
                 });
             }
-
         }
 
         function downloadFromBallasts() {

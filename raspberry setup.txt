@@ -1,0 +1,181 @@
+
+sudo apt-get update
+sudo apt-get upgrade
+
+enable SSL in preferences
+
+sudo apt install xrdp
+
+IP Adrress command line:
+hostname -I
+
+fixed IP
+
+sudo nano /etc/dhcpcd.conf
+
+interface wlan0
+static ip_address=192.168.1.164
+static routers=192.168.1.1
+static domain_name_servers=192.1681.1
+
+
+Step 1: Setup a server on linode
+
+Step 2: Download Putty and SSH in
+
+Step 3: Download and Install Apache
+- sudo apt update
+- sudo apt install apache2
+- apache2 -version
+
+
+
+Step 5: Configure apache
+- sudo systemctl status apache 2  '''Werkt niet
+
+Step 6: Install and enable mod_wsgi
+-       sudo apt-get install libapache2-mod-wsgi python-dev
+
+Step 7:  Creating flask app
+-       cd /var
+-       sudo mkdir webApp
+-       cd webApp
+
+Step 8: Install flask
+-        sudo apt-get install python-pip 'Moet niet op RP
+-        sudo pip install Flask 'Moet niet op RP
+
+Step 8b: Install gitpython
+sudo pip install gitpython
+sudo pip3 install gitpython
+
+
+Step 9: Use winSCP to transfer python files to server
+
+Step 10: configure and enable virtual host
+-       sudo nano /etc/apache2/sites-available/webApp.conf
+
+CLICK TO DOWNLOAD THE CODE TO PUT IN webApp.conf
+https://techwithtim.net/wp-content/up...
+
+
+sudo nano /etc/apache2/sites-available/webApp.conf
+
+<VirtualHost *:80>
+                ServerName 192.168.1.164
+                ServerAdmin email@mywebsite.com
+                WSGIScriptAlias / /var/www/webApp/webapp.wsgi
+                <Directory /var/www/webApp/webApp/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /static /var/www/webApp/webApp/static
+                <Directory /var/www/webApp/webApp/static/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /classes /var/www/webApp/webApp/classes
+                <Directory /var/www/webApp/webApp/classes/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+                Alias /templates /var/www/webApp/webApp/templates
+                <Directory /var/www/webApp/webApp/templates/>
+                        Order allow,deny
+                        Allow from all
+                </Directory>
+
+
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                LogLevel warn
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+-      sudo a2ensite webApp 
+-      systemctl reload apache2
+
+Step 11: Create .wsgi file
+-      sudo nano webapp.wsgi 
+Place the below code in the wsgi file
+
+#!/usr/bin/python
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/webApp/")
+sys.path.insert(0,"/var/www/webApp/webApp/")
+sys.path.insert(0,"/var/www/webApp/webApp/classes")
+
+from webApp import app as application
+application.secret_key = 'Marcs secret key@#$'
+
+
+Step 12: Restart apache
+sudo service apache2 restart
+
+Step 13: Visit the ip address of your server in the browser to  access your website!
+
+
+
+For some reason the Apache2 UFW Profile is missing from etc/ufw/application.d So you have to create one for yourself. No Panic it's easy just create a new text file using this command: gedit /etc/ufw/applications.d/apache2-utils.ufw.profile and copy this inside and save.
+
+[Apache]
+title=Web Server
+description=Apache v2 is the next generation of the omnipresent Apache web server.
+ports=80/tcp
+ports=80/tcp
+
+[Apache Secure]
+title=Web Server (HTTPS)
+description=Apache v2 is the next generation of the omnipresent Apache web server.
+ports=443/tcp
+
+[Apache Full]
+title=Web Server (HTTP,HTTPS)
+description=Apache v2 is the next generation of the omnipresent Apache web server.
+ports=80,443/tcp
+
+
+sudo git clone https://github.com/mgeraert/MLDaliWEB.git
+in /var/www
+
+rename directory
+
+sudo mv MLDaliWEB/ webApp/
+rename file
+
+sudo mv app.py __init__.py
+
+remove file 
+rm
+
+remove directory with content/up
+sudo rm -r dirname
+
+
+add www-data to dialout eg for /dev/ttyUSB0
+
+sudo usermod -a -G dialout www-data
+
+Permissions on e.g. daliconfig.db
+ls -l daliconfig.db
+
+goto /var
+do
+sudo chown -R www-data:www-data /var/www
+
+add pi to www-data :
+sudo usermod -a -G www-data pi
+
+change owner permisions of webApp:
+sudo chmod g+rwx webApp/
+
+GIT
+
+git commit -a -m "Update and virtual groups"
+git push
+
+
+
+

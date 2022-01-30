@@ -342,7 +342,7 @@ class Database(object):
         conn.row_factory = dict_factory
         c = conn.cursor()
         sql_string = 'SELECT ID, ballast_short_address, ballast_name FROM ballasts WHERE ballast_channel=' + \
-                     channel_number + ' AND ballast_group_' + group_number + "=1"
+                     channel_number + ' AND ballast_group_' + group_number + "=1 ORDER BY ballast_short_address ASC"
         c.execute(sql_string)
         data = c.fetchall()
         conn.close()
@@ -359,7 +359,7 @@ class Database(object):
         dali_group_number = data["dali_group_number"]
         dali_group_channel = data["dali_group_channel"]
         sql_string = 'SELECT ID, ballast_short_address, ballast_name FROM ballasts WHERE ballast_channel=' + \
-                     str(dali_group_channel) + ' AND ballast_group_' + str(dali_group_number) + "=1"
+                     str(dali_group_channel) + ' AND ballast_group_' + str(dali_group_number) + "=1 ORDER BY ballast_short_address ASC"
         c.execute(sql_string)
         data = c.fetchall()
         conn.close()

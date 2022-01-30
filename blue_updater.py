@@ -8,8 +8,6 @@ updatr = Blueprint('updater', __name__)
 def updater():
     return render_template('updater.html')
 
-
-
 @updatr.route("/update")
 def update():
     os.system('sh /etc/MLDali/updateMLDali.sh')

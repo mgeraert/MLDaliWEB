@@ -47,7 +47,6 @@
             });
 
 
-
             function getGroupInputField(group_number, ID, group_name) {
 
                 var group = `<option id='grp$ID$'>$number$ $name$</option>`;
@@ -252,7 +251,6 @@
             index = id.substr(2, id.length);
             ballast_id = ballastFromDB[index].ID;
             slider_value = document.getElementById("sl" + index).value;
-            window.alert(checkBoxValue);
 
             if (checkBoxValue) {
                 $.get("/updateSceneValue?ballast_id=" + ballast_id + '&scene_number=' + selectedScene + '&scene_value=255', function (data, status) {

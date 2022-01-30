@@ -12,4 +12,4 @@ def updater():
 
 @updatr.route("/update")
 def update():
-    os.system('/etc/MLDali/updateMLDali.sh')
+    os.system('sh /etc/MLDali/updateMLDali.sh')

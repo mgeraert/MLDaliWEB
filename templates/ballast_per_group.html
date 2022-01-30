@@ -18,6 +18,7 @@
 
         var groups;
         var selectedChannel;
+        var channel_SAs_to_upload;
 
         $(document).ready(function () {
 
@@ -54,9 +55,9 @@
             }
         });
 
-        function GetGroups(){
+        function GetGroups() {
             selectedIndex = $('#channels').prop('selectedIndex');
-            argString = "?channel=" + (selectedIndex+1).toString();
+            argString = "?channel=" + (selectedIndex + 1).toString();
             $.get("/groups_get" + argString, function (data, status) {
                 groups = JSON.parse(data);
                 $.each(groups, function (i, item) {
@@ -90,7 +91,7 @@
                 onclick="DoSelectGroup()"></select>
         </div>
 
-        <div class="widePanel" style="width:900px;height:500px;">
+        <div class="widePanel" style="width:900px;height:530px;">
 
             <div style="position:absolute;top:10px;left:10px;font-weight: bold;">Available</div>
             <div style="position:absolute;top:10px;left:500px;font-weight: bold;">In group</div>
@@ -106,6 +107,8 @@
                         onclick='RemoveFromGroup();'>←Remove</button>
                     <button type='button' class='mlbutton' style="position:absolute;top:200px;left:340px;width:100px;"
                         onclick='AddToGroup();'>Add→</button>
+                    <button type='button' class='mlbutton' style="position:absolute;top:450px;left:486px;width:200px;"
+                        onclick='UploadGroup();'>Upload 'In group' to devices</button>
                 </div>
             </div>
         </div>
@@ -128,6 +131,7 @@
         var ballast_counter;
         var ballasts_not_in;
         var ballasts_in;
+        var ballast_short_address_counter;
 
         $.get("/GetBallastIDsFromChannel?channel_number=1", function (data, status) {
             ballast_ids = JSON.parse(data);;
@@ -215,17 +219,43 @@
             }
         }
 
-        function uploadToBallasts(){
+
+        function UploadGroup() {
+            channel_SAs_to_upload = [];
+            $('#ballastsInside option').each(function (index, element) {
+                splitted = element.value.split(" ");
+                channel_SAs_to_upload.push(parseInt(splitted[0]));
+            });
+            ballast_short_address_counter = 0;
+            UpLoadGroupsToDevice();
+        }
+
+
+        function uploadToBallasts() {
+            channel_SAs_to_upload = [];
+            for (i = 1; i < 64; i++) {
+                channel_SAs_to_upload[i] = i;
+            }
+            ballast_short_address_counter = 0;
+            UpLoadGroupsToDevice();
+        }
+
+        function UpLoadGroupsToDevice() {
+            if (ballast_short_address_counter > channel_SAs_to_upload.length) {
+                return;
+            }
+
             selectedChannelID = selectedChannel.ID;
             argStringChan = "?channel_ID=" + selectedChannelID.toString();
-            for (let i=0;i<64;i++){
-                argString = argStringChan + '&ballast_sa=' + i.toString()
-                $.get("/UploadGroupsToDevice" + argString, function (data, status) {
-                    if (data) {
-                        $("#response").text(data);
-                    }
-                });  
-            }
+
+            argString = argStringChan + '&ballast_sa=' + channel_SAs_to_upload[ballast_short_address_counter].toString()
+            $.get("/UploadGroupsToDevice" + argString, function (data, status) {
+                if (data) {
+                    $("#response").text(data);
+                    ballast_short_address_counter++;
+                    UpLoadGroupsToDevice();
+                }
+            });
         }
 
     </script>

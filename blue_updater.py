@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template
-from git import repo
+import os
 
 updatr = Blueprint('updater', __name__)
 
@@ -10,6 +10,4 @@ def updater():
 
 @updatr.route("/update")
 def update():
-    Repo.clone_from('https://github.com/mgeraert/MLDaliWEB.git',
-                    r'/var/www/webApp/webApp/',
-                    recursive=True)
+    os.system('/etc/MLDali/UpdateMLDali.sh')

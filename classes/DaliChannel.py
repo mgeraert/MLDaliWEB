@@ -251,7 +251,7 @@ class DaliChannel(object):
         sa = ballast_data['ballast_short_address']
         self.__ballast_or_group_address = sa
 
-        for i in range(14):
+        for i in range(16):
             if ballast_data['ballast_group_' + str(i)]:
                 self.DaliAddToGroup(sa, i)
             else:

@@ -158,9 +158,10 @@
                             text: item.page_name
                         }));
                     });
+                    g_SelectedPageIndex = 0;
                     $('#pages option')[0].selected = true;
                     getVisuals();
-                    g_SelectedPageIndex = 0;
+                    
                 }
             });
         }
@@ -187,6 +188,12 @@
             $('#page_name:text').val(g_Pages[g_SelectedPageIndex].page_name);
             $('#page_font_size:text').val(g_Pages[g_SelectedPageIndex].page_font_size);
             $('#page_button_height:text').val(g_Pages[g_SelectedPageIndex].page_button_height);
+            if(g_Pages[g_SelectedPageIndex].page_control_type){
+                document.getElementById("screen_type").checked = true;
+            }else{
+                document.getElementById("screen_type").checked = false;
+            }
+
             getVisuals();
         }
 
@@ -263,11 +270,18 @@
             page_name = $('#page_name').val();
             page_font_size = $('#page_font_size').val();
             page_button_height = $('#page_button_height').val();
+            if (document.getElementById("screen_type").checked){
+                page_control_type = 1;
+            }
+            else{
+                page_control_type = 0;
+            }
 
             argString = "?page_name=" + page_name +
                 "&page_font_size=" + page_font_size +
                 "&page_button_height=" + page_button_height +
-                "&page_id=" + page_id.toString();
+                "&page_id=" + page_id.toString() +
+                "&page_control_type=" + page_control_type.toString();
 
             $.get("/UpdatePage" + argString, function (data, status) {
                 if (data.localeCompare('http200') == 0) {
@@ -342,7 +356,7 @@
         <div class='widePanel' style='height:220px;width:1000px;'>
             <label for="pages" style="position:absolute;top:28px;left:10px">Pages</label>
             <select id="pages" size="5" onClick="doSelectPage()"
-                style="position:absolute; top:58px; left:10px; width: 237px;height: 100px;"></select>
+                style="position:absolute; top:58px; left:10px; width: 232px;height: 100px;"></select>
             <button type="button" class="mlbutton" style="position:absolute; top:175px; left:10px; width:80px;"
                 onclick='AddPage();'>Add</button>
             <button type="button" class="mlbutton" style="position:absolute; top:175px; left:100px; width:80px;"
@@ -357,9 +371,14 @@
             <input id="page_font_size" style="position:absolute; top:88px; left:360px; width:40px;"></input>
             <label style="position:absolute;top:88px;left:410px">pixels</label>
 
+
             <label for="page_button_height" style="position:absolute;top:118px;left:260px">Button height</label>
             <input id="page_button_height" style="position:absolute; top:118px; left:360px; width:40px;"></input>
             <label style="position:absolute;top:118px;left:410px">pixels</label>
+
+            <label for="screen_type" style="position:absolute;top:148px;left:250px">Screen control</label>
+            <input id="screen_type" type='checkbox' style="position:absolute; top:148px; left:360px; width:40px;"></input>
+
 
         </div>
 

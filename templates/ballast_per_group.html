@@ -218,7 +218,7 @@
         function uploadToBallasts(){
             selectedChannelID = selectedChannel.ID;
             argStringChan = "?channel_ID=" + selectedChannelID.toString();
-            for (let i=0;i<1;i++){
+            for (let i=0;i<64;i++){
                 argString = argStringChan + '&ballast_sa=' + i.toString()
                 $.get("/UploadGroupsToDevice" + argString, function (data, status) {
                     if (data) {

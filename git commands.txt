@@ -1,0 +1,9 @@
+$ git commit -m"message"
+git commit -a -m "new message" all files
+
+After git commit command, you entered to the editor, so first hit i then start typing. After committing your message hit Ctrl + c then :wq
+
+
+git config --global core.editor "gedit"
+
+git push "https://github.com/mgeraert/MLDaliWEB.git"

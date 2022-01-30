@@ -262,7 +262,7 @@ def do_set_arc_level():
 @app.route("/doSetArcLevelBallast", methods=['GET'])
 def do_set_arc_level_ballast():
     arc_level = int(request.args.get('arc_level'))
-    ballast_id = int(request.args.get('ballast_i\d'))
+    ballast_id = int(request.args.get('ballast_id'))
     answer = dcs.do_set_arc_level_ballast(arc_level, ballast_id)
     return answer
 

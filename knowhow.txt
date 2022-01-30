@@ -60,6 +60,20 @@ Add to raspberry pi boot:
 2.  insert: cd  /usr/share/pyshared/MLDaliWEB/
 3.  and: sudo python /usr/share/pyshared/MLDaliWEB/__init__.py &
 
+Update code:
+cd /usr/share/pyshared/
+sudo rm -r /usr/share/pyshared/MLDaliWEB
+sudo git clone https://github.com/mgeraert/MLDaliWEB.git
+sudo chmod -R a+rwx /etc/MLDali
+sudo chmod -R a+rwx /usr/share/pyshared/MLDaliWEB
+sudo reboot
+
+
+Make script executable
+
+sudo chmod +x updateMLDali.sh
+
+
 
 
 

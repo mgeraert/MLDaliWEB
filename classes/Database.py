@@ -18,7 +18,7 @@ class Database(object):
         current_os = platform.system().lower()
 
         if current_os.lower() == "windows":
-            db_path = os.getcwd() + os.path.sep + '..' + os.path.sep + 'database' + os.path.sep
+            db_path = os.getcwd() + os.path.sep + 'database' + os.path.sep
         else:
             #config.read('/var/www/webApp/webApp/mlconfig.ini')
             db_path = '/etc/MLDali/'

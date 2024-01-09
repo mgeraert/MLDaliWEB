@@ -8,7 +8,11 @@ import serial
 import json
 import platform
 import os
-#import Barrel
+from RouterInfo import RouterInfo
+import configparser
+import ast
+
+import Barrel
 
 db = Database()
 db.create_db()
@@ -31,9 +35,22 @@ app.register_blueprint(updatr)
 
 dcs = DaliChannels()
 
+config = configparser.ConfigParser()
+current_os = platform.system().lower()
+if current_os.lower() == "windows":
+    db_path = os.getcwd() + os.path.sep + 'database' + os.path.sep
+else:
+    # config.read('/var/www/webApp/webApp/mlconfig.ini')
+    db_path = '/etc/MLDali/'
 
+config.read(db_path + 'mlconfig.ini')
 
-#InfiniteTmr = Barrel.InfiniteTimer(.5, Barrel.tick)
+login = config['ROUTER']['login']
+pw = config['ROUTER']['pw']
+
+ri = RouterInfo("192.168.1.1", login, pw)
+
+InfiniteTmr = Barrel.InfiniteTimer(.5, Barrel.tick)
 
 @app.route("/groups")
 def beneden():
@@ -50,6 +67,43 @@ def visuals():
 @app.route("/database")
 def database():
     return render_template('database.html')
+@app.route("/bie")
+def BuildingIsEmpty():
+
+    occupied = 0
+    attendee_devices = config['ROUTER']['maclist']
+    for client in ri.get_clients_info():
+        for attendee_device in attendee_devices:
+            if client['mac'] == attendee_device:
+                occupied = 1
+
+    return str(occupied)
+
+@app.route('/occupants')
+def occupants():
+    attendee_devices = config['ROUTER']['maclist']
+    accupant_names = config['ROUTER']['namelist']
+
+    attendee_devices = ast.literal_eval(attendee_devices)
+    accupant_names = ast.literal_eval(accupant_names)
+
+    counter = 0
+    occupant_list = []
+    for client in ri.get_clients_info():
+        occupant = {}
+        for attendee_device in attendee_devices:
+            if client['mac'] == attendee_device:
+
+                occupant['mac'] = client['mac']
+                occupant['name'] = accupant_names[counter]
+                occupant['device'] = client['name']
+                occupant_list.append(occupant)
+                counter = counter + 1
+
+    return json.dumps(occupant_list)
+@app.route('/wifi_clients')
+def wifi_clients():
+    return (ri.get_clients_info())
 
 @app.route("/database_name_get")
 def database_name_get():
@@ -460,15 +514,15 @@ def goto_scene():
 
     return json.dumps(data)
 
-#@app.route("/barrelStart")
-#def barrel_start():
-#    InfiniteTmr.start()
-#    return 'http200'
+@app.route("/barrelStart")
+def barrel_start():
+    InfiniteTmr.start()
+    return 'http200'
 
-#@app.route("/barrelStop")
-#def barrel_stop():
-#    InfiniteTmr.cancel()
-#    return 'http200'
+@app.route("/barrelStop")
+def barrel_stop():
+    InfiniteTmr.cancel()
+    return 'http200'
 
 
 if __name__ == '__main__':
